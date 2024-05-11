@@ -18,7 +18,7 @@ public class Board : MonoBehaviour
 	private int tileSizeX;
 	private int tileSizeY;
 
-	private void SplitTextureToSprites(Texture2D source)
+	private void CreateTilesFromTexture(Texture2D source)
 	{
 		sourceWidth = source.width;
 		sourceHeight = source.height;
@@ -36,7 +36,7 @@ public class Board : MonoBehaviour
 				var bottomLeftPixelY = y * tileSizeY;
 
 				var rect = new Rect(bottomLeftPixelX, bottomLeftPixelY, tileSizeX, tileSizeY);
-				var sprite = Sprite.Create(source, rect, new Vector2(0.5f, 0.5f), 100.0f);
+				var sprite = Sprite.Create(source, rect, new Vector2(0.5f, 0.5f), tileSizeX);
 
 				var tile = Instantiate(tilePrefab).GetComponent<Tile>();
 				tile.Initialize(sprite, new Vector2(x, y));
@@ -48,6 +48,6 @@ public class Board : MonoBehaviour
 
 	private void Start()
 	{
-		SplitTextureToSprites(availableTextures[0]);
+		CreateTilesFromTexture(availableTextures[0]);
 	}
 }

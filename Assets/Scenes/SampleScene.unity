@@ -372,8 +372,8 @@ MonoBehaviour:
   availableTextures:
   - {fileID: 2800000, guid: f05b2af187d6d04428d2e3bcf6a8a2d3, type: 3}
   tilePrefab: {fileID: 738140893496108164, guid: 2c91e4d65b4f1bf4a945a7c4b99d5279, type: 3}
-  numTilesX: 8
-  numTilesY: 8
+  numTilesX: 12
+  numTilesY: 12
 --- !u!4 &1207684550
 Transform:
   m_ObjectHideFlags: 0
