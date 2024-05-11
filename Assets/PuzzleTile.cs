@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+public class PuzzleTile : MonoBehaviour
 {
 	private SpriteRenderer spriteRenderer;
 	private Vector2 correctGridPosition;

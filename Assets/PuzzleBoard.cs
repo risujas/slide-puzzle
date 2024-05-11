@@ -2,18 +2,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Board : MonoBehaviour
+public class PuzzleBoard : MonoBehaviour
 {
 	[SerializeField] private List<Texture2D> availableTextures = new List<Texture2D>();
-	[SerializeField] private GameObject tilePrefab;
+	[SerializeField] private GameObject puzzleTilePrefab;
 
-	[SerializeField] private int numTilesX = 10;
-	[SerializeField] private int numTilesY = 10;
+	[SerializeField] private int numTilesX = 7;
+	[SerializeField] private int numTilesY = 7;
 
 	private int sourceWidth;
 	private int sourceHeight;
 
-	private Tile[] tiles;
+	private PuzzleTile[] puzzleTiles;
+	private PuzzleTile missingPuzzleTile;
 
 	private int tileSizeX;
 	private int tileSizeY;
@@ -26,7 +27,7 @@ public class Board : MonoBehaviour
 		tileSizeX = sourceWidth / numTilesX;
 		tileSizeY = sourceHeight / numTilesY;
 
-		tiles = new Tile[numTilesX * numTilesY];
+		puzzleTiles = new PuzzleTile[numTilesX * numTilesY];
 
 		for (var y = numTilesY - 1; y >= 0; y--)
 		{
@@ -38,16 +39,25 @@ public class Board : MonoBehaviour
 				var rect = new Rect(bottomLeftPixelX, bottomLeftPixelY, tileSizeX, tileSizeY);
 				var sprite = Sprite.Create(source, rect, new Vector2(0.5f, 0.5f), tileSizeX);
 
-				var tile = Instantiate(tilePrefab).GetComponent<Tile>();
+				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleTile>();
 				tile.Initialize(sprite, new Vector2(x, y));
 				tile.transform.position = new Vector2(x, y);
-				tiles[x + y * numTilesX] = tile;
+				puzzleTiles[x + y * numTilesX] = tile;
 			}
 		}
+	}
+
+	private void SetMissingTile()
+	{
+		int index = Random.Range(0, puzzleTiles.Length - 1);
+		missingPuzzleTile = puzzleTiles[index];
+		missingPuzzleTile.gameObject.SetActive(false);
+		puzzleTiles[index] = null;
 	}
 
 	private void Start()
 	{
 		CreateTilesFromTexture(availableTextures[0]);
+		SetMissingTile();
 	}
 }
