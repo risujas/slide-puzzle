@@ -2,19 +2,13 @@ using UnityEngine;
 
 public class PuzzleTile : MonoBehaviour
 {
-	private SpriteRenderer spriteRenderer;
-	private Vector2 correctGridPosition;
+	private Vector2 correctCoordinates;
 
-	public Vector2 CorrectGridPosition => correctGridPosition;
+	public Vector2 CorrectCoordinates => correctCoordinates;
 
-	public void Initialize(Sprite sprite, Vector2 correctGridPos)
+	public void Initialize(Sprite sprite, Vector2 correctCoordinates)
 	{
-		spriteRenderer.sprite = sprite;
-		correctGridPosition = correctGridPos;
-	}
-
-	private void Awake()
-	{
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		GetComponent<SpriteRenderer>().sprite = sprite;
+		this.correctCoordinates = correctCoordinates;
 	}
 }
