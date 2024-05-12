@@ -10,7 +10,6 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private Vector2Int boardSize;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
-	private PuzzleTile[] puzzleTiles;
 	private Vector2Int tileSize;
 
 	private PuzzleBoardSlot GetSlotByCoordinates(int x, int y)
@@ -41,7 +40,7 @@ public class PuzzleBoard : MonoBehaviour
 		return null;
 	}
 
-	private void InitializeBoard()
+	private void CreateSlotsForTiles(PuzzleTile[] unshuffledTiles)
 	{
 		puzzleBoardSlots = new PuzzleBoardSlot[boardSize.x * boardSize.y];
 
@@ -51,17 +50,17 @@ public class PuzzleBoard : MonoBehaviour
 			{
 				int index = x + y * boardSize.x;
 				puzzleBoardSlots[index] = Instantiate(puzzleSlotPrefab).GetComponent<PuzzleBoardSlot>();
-				puzzleBoardSlots[index].Prepare(this, puzzleTiles[index], new Vector2Int(x, y));
+				puzzleBoardSlots[index].Prepare(this, unshuffledTiles[index], new Vector2Int(x, y));
 			}
 		}
 	}
 
-	private void CreateTilesFromTexture(Texture2D source)
+	private PuzzleTile[] CreateTiles(Texture2D source)
 	{
 		tileSize.x = source.width / boardSize.x;
 		tileSize.y = source.height / boardSize.y;
 
-		puzzleTiles = new PuzzleTile[boardSize.x * boardSize.y];
+		var puzzleTiles = new PuzzleTile[boardSize.x * boardSize.y];
 
 		for (int y = 0; y < boardSize.y; y++)
 		{
@@ -78,21 +77,23 @@ public class PuzzleBoard : MonoBehaviour
 				puzzleTiles[x + y * boardSize.x] = tile;
 			}
 		}
+
+		return puzzleTiles;
 	}
 
-	private void ShuffleTiles()
+	private void ShuffleTiles(ref PuzzleTile[] tiles)
 	{
 		System.Random random = new System.Random();
-		puzzleTiles = puzzleTiles.OrderBy(a => random.Next()).ToArray();
+		tiles = tiles.OrderBy(a => random.Next()).ToArray();
 	}
 
-	private void InsertTiles()
+	private void InsertTilesToSlots(PuzzleTile[] tiles)
 	{
 		for (int y = 0; y < boardSize.y; y++)
 		{
 			for (int x = 0; x < boardSize.x; x++)
 			{
-				puzzleBoardSlots[x + y * boardSize.x].InsertTile(puzzleTiles[x + y * boardSize.x]);
+				puzzleBoardSlots[x + y * boardSize.x].InsertTile(tiles[x + y * boardSize.x]);
 			}
 		}
 	}
@@ -105,10 +106,10 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Start()
 	{
-		CreateTilesFromTexture(availableTextures[0]);
-		InitializeBoard();
-		ShuffleTiles();
-		InsertTiles();
+		var tiles = CreateTiles(availableTextures[0]);
+		CreateSlotsForTiles(tiles);
+		ShuffleTiles(ref tiles);
+		InsertTilesToSlots(tiles);
 		CreateEmptySlot();
 	}
 
