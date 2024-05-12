@@ -21,12 +21,8 @@ public class PuzzleBoard : MonoBehaviour
 		{
 			for (int x = 0; x < boardSize.x; x++)
 			{
-				puzzleBoardSlots[x, y] = Instantiate(puzzleSlotPrefab, Vector3.zero, Quaternion.identity).GetComponent<PuzzleBoardSlot>();
-				puzzleBoardSlots[x, y].name = "PuzzleBoardSlot_" + x + "_" + y;
-				puzzleBoardSlots[x, y].gridCoordinates = new Vector2Int(x, y);
-				puzzleBoardSlots[x, y].transform.parent = transform;
-				puzzleBoardSlots[x, y].transform.position = (Vector3.right * x) + (Vector3.up * y);
-				puzzleBoardSlots[x, y].correctTile = puzzleTiles[x + y * boardSize.x];
+				puzzleBoardSlots[x, y] = Instantiate(puzzleSlotPrefab).GetComponent<PuzzleBoardSlot>();
+				puzzleBoardSlots[x, y].Prepare(this, puzzleTiles[x + y * boardSize.x], new Vector2Int(x, y));
 			}
 		}
 	}
