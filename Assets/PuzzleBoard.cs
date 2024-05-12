@@ -13,6 +13,31 @@ public class PuzzleBoard : MonoBehaviour
 	private PuzzleTile[] puzzleTiles;
 	private Vector2Int tileSize;
 
+	private bool TileInSlotIsMoveable(int x, int y)
+	{
+		if (x > 0 && puzzleBoardSlots[(x - 1) + y * boardSize.x].TreatAsEmpty)
+		{
+			return true;
+		}
+
+		if (x < boardSize.x - 1 && puzzleBoardSlots[(x + 1) + y * boardSize.x].TreatAsEmpty)
+		{
+			return true;
+		}
+
+		if (y > 0 && puzzleBoardSlots[x + (y - 1) * boardSize.x].TreatAsEmpty)
+		{
+			return true;
+		}
+
+		if (y < boardSize.y - 1 && puzzleBoardSlots[x + (y + 1) * boardSize.x].TreatAsEmpty)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	private void InitializeBoard()
 	{
 		puzzleBoardSlots = new PuzzleBoardSlot[boardSize.x * boardSize.y];
@@ -82,5 +107,23 @@ public class PuzzleBoard : MonoBehaviour
 		ShuffleTiles();
 		InsertTiles();
 		CreateEmptySlot();
+	}
+
+	private void Update()
+	{
+		if (Input.GetMouseButtonDown(0))
+		{
+			Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+			RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+			if (hit.collider != null)
+			{
+				var slot = hit.collider.GetComponentInParent<PuzzleBoardSlot>();
+				if (slot)
+				{
+					Debug.Log(TileInSlotIsMoveable(slot.GridCoordinates.x, slot.GridCoordinates.y));
+				}
+			}
+		}
 	}
 }

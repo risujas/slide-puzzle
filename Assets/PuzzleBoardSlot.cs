@@ -3,9 +3,15 @@ using UnityEngine;
 public class PuzzleBoardSlot : MonoBehaviour
 {
 	private PuzzleTile correctTile;
-	private Vector2Int gridCoordinates;
 	private PuzzleTile insertedTile;
+	private Vector2Int gridCoordinates;
 	private bool treatAsEmpty;
+
+	public bool TreatAsEmpty => treatAsEmpty;
+
+	public bool HasCorrectTile => (insertedTile == correctTile);
+
+	public Vector2Int GridCoordinates => gridCoordinates;
 
 	public void Prepare(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
 	{
