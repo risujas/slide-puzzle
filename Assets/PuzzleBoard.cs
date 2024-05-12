@@ -67,9 +67,7 @@ public class PuzzleBoard : MonoBehaviour
 		{
 			for (int x = 0; x < boardSize.x; x++)
 			{
-				puzzleBoardSlots[x, y].insertedTile = puzzleTiles[x + y * boardSize.x];
-				puzzleBoardSlots[x, y].insertedTile.transform.position = puzzleBoardSlots[x, y].transform.position;
-				puzzleBoardSlots[x, y].insertedTile.gameObject.SetActive(true);
+				puzzleBoardSlots[x, y].InsertTile(puzzleTiles[x + y * boardSize.x]);
 			}
 		}
 	}
