@@ -371,9 +371,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableTextures:
   - {fileID: 2800000, guid: f05b2af187d6d04428d2e3bcf6a8a2d3, type: 3}
+  puzzleSlotPrefab: {fileID: 7722846631086609518, guid: 72802e590c80e0141a585675e8b110ff, type: 3}
   puzzleTilePrefab: {fileID: 738140893496108164, guid: 2c91e4d65b4f1bf4a945a7c4b99d5279, type: 3}
-  numTilesX: 5
-  numTilesY: 5
+  boardSize: {x: 5, y: 5}
 --- !u!4 &1207684550
 Transform:
   m_ObjectHideFlags: 0
