@@ -10,7 +10,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private Vector2Int boardSize;
 
 	private PuzzleBoardSlot[,] puzzleBoardSlots;
-	private PuzzleTile[,] puzzleTiles;
+	private PuzzleTile[] puzzleTiles;
 	private Vector2Int tileSize;
 
 	private void InitializeBoard()
@@ -26,7 +26,7 @@ public class PuzzleBoard : MonoBehaviour
 				puzzleBoardSlots[x, y].gridCoordinates = new Vector2Int(x, y);
 				puzzleBoardSlots[x, y].transform.parent = transform;
 				puzzleBoardSlots[x, y].transform.position = (Vector3.right * x) + (Vector3.up * y);
-				puzzleBoardSlots[x, y].correctTile = puzzleTiles[x, y];
+				puzzleBoardSlots[x, y].correctTile = puzzleTiles[x + y * boardSize.x];
 			}
 		}
 	}
@@ -36,7 +36,7 @@ public class PuzzleBoard : MonoBehaviour
 		tileSize.x = source.width / boardSize.x;
 		tileSize.y = source.height / boardSize.y;
 
-		puzzleTiles = new PuzzleTile[boardSize.x, boardSize.y];
+		puzzleTiles = new PuzzleTile[boardSize.x * boardSize.y];
 
 		for (int y = 0; y < boardSize.y; y++)
 		{
@@ -50,18 +50,27 @@ public class PuzzleBoard : MonoBehaviour
 				tile.name = "PuzzleTile_" + x + "_" + y;
 				tile.GetComponent<SpriteRenderer>().sprite = sprite;
 				tile.gameObject.SetActive(false);
-				puzzleTiles[x, y] = tile;
+				puzzleTiles[x + y * boardSize.x] = tile;
 			}
 		}
 	}
 
-	private void InsertTilesToBoard()
+	private void ShuffleTiles()
 	{
-		foreach (var slot in puzzleBoardSlots)
+		System.Random random = new System.Random();
+		puzzleTiles = puzzleTiles.OrderBy(a => random.Next()).ToArray();
+	}
+
+	private void InsertTiles()
+	{
+		for (int y = 0; y < boardSize.y; y++)
 		{
-			slot.insertedTile = slot.correctTile;
-			slot.insertedTile.gameObject.SetActive(true);
-			slot.insertedTile.transform.position = slot.transform.position;
+			for (int x = 0; x < boardSize.x; x++)
+			{
+				puzzleBoardSlots[x, y].insertedTile = puzzleTiles[x + y * boardSize.x];
+				puzzleBoardSlots[x, y].insertedTile.transform.position = puzzleBoardSlots[x, y].transform.position;
+				puzzleBoardSlots[x, y].insertedTile.gameObject.SetActive(true);
+			}
 		}
 	}
 
@@ -69,6 +78,7 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		CreateTilesFromTexture(availableTextures[0]);
 		InitializeBoard();
-		InsertTilesToBoard();
+		ShuffleTiles();
+		InsertTiles();
 	}
 }
