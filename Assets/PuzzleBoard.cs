@@ -55,7 +55,7 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
-	private PuzzleTile[] CreateTiles(Texture2D source)
+	private PuzzleTile[] CreateTilesFromTexture(Texture2D source)
 	{
 		tileSize.x = source.width / boardSize.x;
 		tileSize.y = source.height / boardSize.y;
@@ -106,7 +106,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Start()
 	{
-		var tiles = CreateTiles(availableTextures[0]);
+		var tiles = CreateTilesFromTexture(availableTextures[0]);
 		CreateSlotsForTiles(tiles);
 		ShuffleTiles(ref tiles);
 		InsertTilesToSlots(tiles);
