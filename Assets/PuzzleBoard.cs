@@ -20,39 +20,21 @@ public class PuzzleBoard : MonoBehaviour
 
 	private PuzzleBoardSlot GetAdjacentEmptySlot(PuzzleBoardSlot firstSlot)
 	{
-		if (firstSlot.GridCoordinates.x > 0)
-		{
-			PuzzleBoardSlot secondSlot = puzzleBoardSlots[(firstSlot.GridCoordinates.x - 1) + firstSlot.GridCoordinates.y * boardSize.x];
-			if (secondSlot.TreatAsEmpty)
-			{
-				return secondSlot;
-			}
-		}
+		int[] offsetX = { -1, 1, 0, 0 };
+		int[] offsetY = { 0, 0, -1, 1 };
 
-		if (firstSlot.GridCoordinates.x < boardSize.x - 1)
+		for (int i = 0; i < offsetX.Length; i++)
 		{
-			PuzzleBoardSlot secondSlot = puzzleBoardSlots[(firstSlot.GridCoordinates.x + 1) + firstSlot.GridCoordinates.y * boardSize.x];
-			if (secondSlot.TreatAsEmpty)
-			{
-				return secondSlot;
-			}
-		}
+			int secondSlotX = firstSlot.GridCoordinates.x + offsetX[i];
+			int secondSlotY = firstSlot.GridCoordinates.y + offsetY[i];
 
-		if (firstSlot.GridCoordinates.y > 0)
-		{
-			PuzzleBoardSlot secondSlot = puzzleBoardSlots[firstSlot.GridCoordinates.x + (firstSlot.GridCoordinates.y - 1) * boardSize.x];
-			if (secondSlot.TreatAsEmpty)
+			if (secondSlotX >= 0 && secondSlotX < boardSize.x && secondSlotY >= 0 && secondSlotY < boardSize.y)
 			{
-				return secondSlot;
-			}
-		}
-
-		if (firstSlot.GridCoordinates.y < boardSize.y - 1)
-		{
-			PuzzleBoardSlot secondSlot = puzzleBoardSlots[firstSlot.GridCoordinates.x + (firstSlot.GridCoordinates.y + 1) * boardSize.x];
-			if (secondSlot.TreatAsEmpty)
-			{
-				return secondSlot;
+				PuzzleBoardSlot secondSlot = GetSlotByCoordinates(secondSlotX, secondSlotY);
+				if (secondSlot.TreatAsEmpty)
+				{
+					return secondSlot;
+				}
 			}
 		}
 
