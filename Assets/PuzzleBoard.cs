@@ -69,11 +69,18 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
+	private void CreateEmptySlot()
+	{
+		int index = Random.Range(0, boardSize.x * boardSize.y);
+		puzzleBoardSlots[index].SetEmpty(true);
+	}
+
 	private void Start()
 	{
 		CreateTilesFromTexture(availableTextures[0]);
 		InitializeBoard();
 		ShuffleTiles();
 		InsertTiles();
+		CreateEmptySlot();
 	}
 }

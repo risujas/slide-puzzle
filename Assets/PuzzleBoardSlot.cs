@@ -5,6 +5,7 @@ public class PuzzleBoardSlot : MonoBehaviour
 	private PuzzleTile correctTile;
 	private Vector2Int gridCoordinates;
 	private PuzzleTile insertedTile;
+	private bool treatAsEmpty;
 
 	public void Prepare(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
 	{
@@ -20,8 +21,14 @@ public class PuzzleBoardSlot : MonoBehaviour
 	public void InsertTile(PuzzleTile tile)
 	{
 		insertedTile = tile;
-		insertedTile.gameObject.SetActive(true);
 		insertedTile.transform.position = transform.position;
 		insertedTile.transform.parent = transform;
+		SetEmpty(false);
+	}
+
+	public void SetEmpty(bool isEmpty)
+	{
+		treatAsEmpty = isEmpty;
+		insertedTile.gameObject.SetActive(!treatAsEmpty);
 	}
 }
