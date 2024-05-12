@@ -104,13 +104,18 @@ public class PuzzleBoard : MonoBehaviour
 		puzzleBoardSlots[index].SetEmpty(true);
 	}
 
-	private void Start()
+	private void InitializeBoard(Texture2D texture)
 	{
-		var tiles = CreateTilesFromTexture(availableTextures[0]);
+		var tiles = CreateTilesFromTexture(texture);
 		CreateSlotsForTiles(tiles);
 		ShuffleTiles(ref tiles);
 		InsertTilesToSlots(tiles);
 		CreateEmptySlot();
+	}
+
+	private void Start()
+	{
+		InitializeBoard(availableTextures[0]);
 	}
 
 	private void Update()
