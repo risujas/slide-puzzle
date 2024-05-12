@@ -13,29 +13,50 @@ public class PuzzleBoard : MonoBehaviour
 	private PuzzleTile[] puzzleTiles;
 	private Vector2Int tileSize;
 
-	private bool TileInSlotIsMoveable(int x, int y)
+	private PuzzleBoardSlot GetSlotByCoordinates(int x, int y)
 	{
-		if (x > 0 && puzzleBoardSlots[(x - 1) + y * boardSize.x].TreatAsEmpty)
+		return puzzleBoardSlots[x + y * boardSize.x];
+	}
+
+	private PuzzleBoardSlot GetAdjacentEmptySlot(PuzzleBoardSlot firstSlot)
+	{
+		if (firstSlot.GridCoordinates.x > 0)
 		{
-			return true;
+			PuzzleBoardSlot secondSlot = puzzleBoardSlots[(firstSlot.GridCoordinates.x - 1) + firstSlot.GridCoordinates.y * boardSize.x];
+			if (secondSlot.TreatAsEmpty)
+			{
+				return secondSlot;
+			}
 		}
 
-		if (x < boardSize.x - 1 && puzzleBoardSlots[(x + 1) + y * boardSize.x].TreatAsEmpty)
+		if (firstSlot.GridCoordinates.x < boardSize.x - 1)
 		{
-			return true;
+			PuzzleBoardSlot secondSlot = puzzleBoardSlots[(firstSlot.GridCoordinates.x + 1) + firstSlot.GridCoordinates.y * boardSize.x];
+			if (secondSlot.TreatAsEmpty)
+			{
+				return secondSlot;
+			}
 		}
 
-		if (y > 0 && puzzleBoardSlots[x + (y - 1) * boardSize.x].TreatAsEmpty)
+		if (firstSlot.GridCoordinates.y > 0)
 		{
-			return true;
+			PuzzleBoardSlot secondSlot = puzzleBoardSlots[firstSlot.GridCoordinates.x + (firstSlot.GridCoordinates.y - 1) * boardSize.x];
+			if (secondSlot.TreatAsEmpty)
+			{
+				return secondSlot;
+			}
 		}
 
-		if (y < boardSize.y - 1 && puzzleBoardSlots[x + (y + 1) * boardSize.x].TreatAsEmpty)
+		if (firstSlot.GridCoordinates.y < boardSize.y - 1)
 		{
-			return true;
+			PuzzleBoardSlot secondSlot = puzzleBoardSlots[firstSlot.GridCoordinates.x + (firstSlot.GridCoordinates.y + 1) * boardSize.x];
+			if (secondSlot.TreatAsEmpty)
+			{
+				return secondSlot;
+			}
 		}
 
-		return false;
+		return null;
 	}
 
 	private void InitializeBoard()
@@ -121,7 +142,7 @@ public class PuzzleBoard : MonoBehaviour
 				var slot = hit.collider.GetComponentInParent<PuzzleBoardSlot>();
 				if (slot)
 				{
-					Debug.Log(TileInSlotIsMoveable(slot.GridCoordinates.x, slot.GridCoordinates.y));
+					Debug.Log(GetAdjacentEmptySlot(slot));
 				}
 			}
 		}
