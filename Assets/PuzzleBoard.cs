@@ -66,14 +66,9 @@ public class PuzzleBoard : MonoBehaviour
 		{
 			for (int x = 0; x < boardSize.x; x++)
 			{
-				Vector2 cornerPixel = new Vector2Int(x * tileSize.x, y * tileSize.y);
-				var rect = new Rect(cornerPixel.x, cornerPixel.y, tileSize.x, tileSize.y);
-				var sprite = Sprite.Create(source, rect, new Vector2(0.5f, 0.5f), tileSize.x);
+				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleTile>();
+				tile.Create(source, new Vector2Int(x, y), tileSize);
 
-				var tile = Instantiate(puzzleTilePrefab, Vector3.zero, Quaternion.identity).GetComponent<PuzzleTile>();
-				tile.name = "PuzzleTile_" + x + "_" + y;
-				tile.GetComponent<SpriteRenderer>().sprite = sprite;
-				tile.gameObject.SetActive(false);
 				puzzleTiles[x + y * boardSize.x] = tile;
 			}
 		}
