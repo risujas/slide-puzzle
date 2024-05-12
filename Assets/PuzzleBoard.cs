@@ -9,20 +9,21 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private GameObject puzzleTilePrefab;
 	[SerializeField] private Vector2Int boardSize;
 
-	private PuzzleBoardSlot[,] puzzleBoardSlots;
+	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleTile[] puzzleTiles;
 	private Vector2Int tileSize;
 
 	private void InitializeBoard()
 	{
-		puzzleBoardSlots = new PuzzleBoardSlot[boardSize.x, boardSize.y];
+		puzzleBoardSlots = new PuzzleBoardSlot[boardSize.x * boardSize.y];
 
 		for (int y = 0; y < boardSize.y; y++)
 		{
 			for (int x = 0; x < boardSize.x; x++)
 			{
-				puzzleBoardSlots[x, y] = Instantiate(puzzleSlotPrefab).GetComponent<PuzzleBoardSlot>();
-				puzzleBoardSlots[x, y].Prepare(this, puzzleTiles[x + y * boardSize.x], new Vector2Int(x, y));
+				int index = x + y * boardSize.x;
+				puzzleBoardSlots[index] = Instantiate(puzzleSlotPrefab).GetComponent<PuzzleBoardSlot>();
+				puzzleBoardSlots[index].Prepare(this, puzzleTiles[index], new Vector2Int(x, y));
 			}
 		}
 	}
@@ -63,7 +64,7 @@ public class PuzzleBoard : MonoBehaviour
 		{
 			for (int x = 0; x < boardSize.x; x++)
 			{
-				puzzleBoardSlots[x, y].InsertTile(puzzleTiles[x + y * boardSize.x]);
+				puzzleBoardSlots[x + y * boardSize.x].InsertTile(puzzleTiles[x + y * boardSize.x]);
 			}
 		}
 	}

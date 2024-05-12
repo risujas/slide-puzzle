@@ -22,5 +22,6 @@ public class PuzzleBoardSlot : MonoBehaviour
 		insertedTile = tile;
 		insertedTile.gameObject.SetActive(true);
 		insertedTile.transform.position = transform.position;
+		insertedTile.transform.parent = transform;
 	}
 }
