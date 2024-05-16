@@ -15,6 +15,14 @@ public class PuzzleBoard : MonoBehaviour
 	private bool isMovingTiles;
 	private PuzzleBoardSlot emptySlot;
 
+	private void SetBoardPosition()
+	{
+		Vector3 pos = Vector3.zero;
+		pos.x = -(boardSize.x / 2.0f) + 0.5f;
+		pos.y = -(boardSize.y / 2.0f) + 0.5f;
+		transform.position = pos;
+	}
+
 	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
 	{
 		if (!isMovingTiles)
@@ -175,9 +183,10 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		var tiles = CreateTilesFromTexture(texture);
 		CreateSlotsForTiles(tiles);
+		SetBoardPosition();
 		InsertTilesToSlots(tiles);
 		SetEmptySlot(puzzleBoardSlots[boardSize.x - 1]);
-		StartCoroutine(ShuffleBoard(0, 100, 0.03f));
+		StartCoroutine(ShuffleBoard(0, 1000, 0.00f));
 	}
 
 	private void HandleInput()
