@@ -48,7 +48,7 @@ public class PuzzleBoard : MonoBehaviour
 		return puzzleBoardSlots[x + y * boardSize.x];
 	}
 
-	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot)
+	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot, PuzzleBoardSlot ignoredSlot)
 	{
 		List<PuzzleBoardSlot> adjacentSlots = new List<PuzzleBoardSlot>();
 
@@ -63,6 +63,11 @@ public class PuzzleBoard : MonoBehaviour
 			if (secondSlotX >= 0 && secondSlotX < boardSize.x && secondSlotY >= 0 && secondSlotY < boardSize.y)
 			{
 				PuzzleBoardSlot secondSlot = GetSlotByCoordinates(secondSlotX, secondSlotY);
+				if (secondSlot == ignoredSlot)
+				{
+					continue;
+				}
+
 				adjacentSlots.Add(secondSlot);
 			}
 		}
@@ -73,6 +78,11 @@ public class PuzzleBoard : MonoBehaviour
 		}
 
 		return adjacentSlots;
+	}
+
+	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot)
+	{
+		return GetAdjacentSlots(firstSlot, null);
 	}
 
 	private PuzzleBoardSlot GetAdjacentEmptySlot(PuzzleBoardSlot firstSlot)
@@ -128,6 +138,7 @@ public class PuzzleBoard : MonoBehaviour
 	private IEnumerator ShuffleBoard(int seed, int numMoves, float moveInterval)
 	{
 		Random.InitState(seed);
+		PuzzleBoardSlot previousEmptySlot = null;
 
 		for (int i = 0; i < numMoves; i++)
 		{
@@ -136,9 +147,11 @@ public class PuzzleBoard : MonoBehaviour
 				yield return null;
 			}
 
-			var adjacentSlots = GetAdjacentSlots(emptySlot);
+			var adjacentSlots = GetAdjacentSlots(emptySlot, previousEmptySlot);
 			var randomAdjacent = adjacentSlots[Random.Range(0, adjacentSlots.Count)];
-			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, 0.07f));
+			previousEmptySlot = emptySlot;
+
+			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, moveInterval));
 		}
 	}
 
@@ -166,7 +179,7 @@ public class PuzzleBoard : MonoBehaviour
 		CreateSlotsForTiles(tiles);
 		InsertTilesToSlots(tiles);
 		SetEmptySlot(puzzleBoardSlots[boardSize.x - 1]);
-		StartCoroutine(ShuffleBoard(0, 300, 0.07f));
+		StartCoroutine(ShuffleBoard(0, 100, 0.03f));
 	}
 
 	private void HandleInput()
