@@ -32,8 +32,6 @@ public class PuzzleBoard : MonoBehaviour
 				yield return null;
 			}
 
-			tile.transform.position = destinationSlot.transform.position;
-
 			SetEmptySlot(originSlot);
 			destinationSlot.InsertTile(tile);
 
