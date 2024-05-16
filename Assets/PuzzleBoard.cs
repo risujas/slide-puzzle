@@ -186,6 +186,11 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
+	private void SetEmptyCornerTile()
+	{
+		puzzleBoardSlots[boardSize.x - 1].SetEmpty();
+	}
+
 	private void InitializeBoard(Texture2D texture)
 	{
 		var tiles = CreateTilesFromTexture(texture);
@@ -194,7 +199,7 @@ public class PuzzleBoard : MonoBehaviour
 		CenterBoardOnWorldOrigin();
 
 		InsertTilesToSlots(tiles);
-		puzzleBoardSlots[boardSize.x - 1].SetEmpty();
+		SetEmptyCornerTile();
 		StartCoroutine(ShuffleBoard(0, 1000, 0.00f));
 	}
 
