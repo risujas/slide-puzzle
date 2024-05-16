@@ -12,7 +12,8 @@ public class PuzzleBoard : MonoBehaviour
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
 
-	private bool isMovingTiles;
+	private bool isShuffling = false;
+	private bool isMovingTiles = false;
 
 	private PuzzleBoardSlot GetEmptySlot()
 	{
@@ -155,6 +156,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private IEnumerator ShuffleBoard(int seed, int numMoves, float moveInterval)
 	{
+		isShuffling = true;
 		Random.InitState(seed);
 		PuzzleBoardSlot previousEmptySlot = null;
 
@@ -172,6 +174,8 @@ public class PuzzleBoard : MonoBehaviour
 
 			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, moveInterval));
 		}
+
+		isShuffling = false;
 	}
 
 
@@ -232,6 +236,9 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Update()
 	{
-		HandleInput();
+		if (!isShuffling)
+		{
+			HandleInput();
+		}
 	}
 }
