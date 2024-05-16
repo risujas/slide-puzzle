@@ -229,6 +229,19 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
+	private bool CheckForCompletion()
+	{
+		foreach (var s in puzzleBoardSlots)
+		{
+			if (!s.HasCorrectTile && !s.IsEmpty)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	private void Start()
 	{
 		InitializeBoard(availableTextures[0]);
@@ -239,6 +252,10 @@ public class PuzzleBoard : MonoBehaviour
 		if (!isShuffling)
 		{
 			HandleInput();
+			if (CheckForCompletion())
+			{
+				Debug.Log("Completed");
+			}
 		}
 	}
 }

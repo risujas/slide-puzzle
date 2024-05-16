@@ -22,12 +22,15 @@ public class PuzzleBoardSlot : MonoBehaviour
 	public void InsertTile(PuzzleTile tile)
 	{
 		InsertedTile = tile;
+		InsertedTile.gameObject.SetActive(true);
+
 		InsertedTile.transform.position = transform.position;
 		InsertedTile.transform.parent = transform;
 	}
 
 	public void SetEmpty()
 	{
+		InsertedTile.gameObject.SetActive(false);
 		InsertedTile = null;
 	}
 }
