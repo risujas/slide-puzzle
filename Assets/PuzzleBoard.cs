@@ -8,14 +8,13 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
 	[SerializeField] private Vector2Int boardSize;
-	[SerializeField] private float tilePositionLerpDuration = 0.5f;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
 
 	private bool isMovingTiles;
 
-	private IEnumerator<PuzzleBoardSlot> MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot)
+	private IEnumerator<PuzzleBoardSlot> MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
 	{
 		if (!isMovingTiles)
 		{
@@ -23,10 +22,10 @@ public class PuzzleBoard : MonoBehaviour
 			var tile = originSlot.InsertedTile;
 
 			float t = 0.0f;
-			while (t < tilePositionLerpDuration)
+			while (t < duration)
 			{
 				t += Time.deltaTime;
-				float ratio = t / tilePositionLerpDuration;
+				float ratio = t / duration;
 
 				tile.transform.position = Vector3.Lerp(originSlot.transform.position, destinationSlot.transform.position, ratio);
 				yield return null;
@@ -48,8 +47,10 @@ public class PuzzleBoard : MonoBehaviour
 		return puzzleBoardSlots[x + y * boardSize.x];
 	}
 
-	private PuzzleBoardSlot GetAdjacentEmptySlot(PuzzleBoardSlot firstSlot)
+	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot)
 	{
+		List<PuzzleBoardSlot> adjacentSlots = new List<PuzzleBoardSlot>();
+
 		int[] offsetX = { -1, 1, 0, 0 };
 		int[] offsetY = { 0, 0, -1, 1 };
 
@@ -61,10 +62,26 @@ public class PuzzleBoard : MonoBehaviour
 			if (secondSlotX >= 0 && secondSlotX < boardSize.x && secondSlotY >= 0 && secondSlotY < boardSize.y)
 			{
 				PuzzleBoardSlot secondSlot = GetSlotByCoordinates(secondSlotX, secondSlotY);
-				if (secondSlot.TreatAsEmpty)
-				{
-					return secondSlot;
-				}
+				adjacentSlots.Add(secondSlot);
+			}
+		}
+
+		if (adjacentSlots.Count == 0)
+		{
+			adjacentSlots = null;
+		}
+
+		return adjacentSlots;
+	}
+
+	private PuzzleBoardSlot GetAdjacentEmptySlot(PuzzleBoardSlot firstSlot)
+	{
+		var adjacentSlots = GetAdjacentSlots(firstSlot);
+		foreach (var slot in adjacentSlots)
+		{
+			if (slot.TreatAsEmpty)
+			{
+				return slot;
 			}
 		}
 
@@ -107,10 +124,9 @@ public class PuzzleBoard : MonoBehaviour
 		return puzzleTiles;
 	}
 
-	private void ShuffleTiles(ref PuzzleTile[] tiles)
+	private void ShuffleBoard()
 	{
-		System.Random random = new System.Random();
-		tiles = tiles.OrderBy(a => random.Next()).ToArray();
+
 	}
 
 	private void InsertTilesToSlots(PuzzleTile[] tiles)
@@ -126,17 +142,16 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void CreateEmptySlot()
 	{
-		int index = Random.Range(0, boardSize.x * boardSize.y);
-		puzzleBoardSlots[index].SetEmpty(true);
+		puzzleBoardSlots[boardSize.x - 1].SetEmpty(true);
 	}
 
 	private void InitializeBoard(Texture2D texture)
 	{
 		var tiles = CreateTilesFromTexture(texture);
 		CreateSlotsForTiles(tiles);
-		ShuffleTiles(ref tiles);
 		InsertTilesToSlots(tiles);
 		CreateEmptySlot();
+		ShuffleBoard();
 	}
 
 	private void HandleInput()
@@ -154,7 +169,7 @@ public class PuzzleBoard : MonoBehaviour
 					var adjacentEmptySlot = GetAdjacentEmptySlot(slot);
 					if (adjacentEmptySlot && !isMovingTiles)
 					{
-						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot));
+						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot, 0.3f));
 					}
 				}
 			}
