@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PuzzleBoard : MonoBehaviour
@@ -13,8 +13,9 @@ public class PuzzleBoard : MonoBehaviour
 	private Vector2Int tileSize;
 
 	private bool isMovingTiles;
+	private PuzzleBoardSlot emptySlot;
 
-	private IEnumerator<PuzzleBoardSlot> MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
+	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
 	{
 		if (!isMovingTiles)
 		{
@@ -33,7 +34,7 @@ public class PuzzleBoard : MonoBehaviour
 
 			tile.transform.position = destinationSlot.transform.position;
 
-			originSlot.SetEmpty(true);
+			SetEmptySlot(originSlot);
 			destinationSlot.InsertTile(tile);
 
 			isMovingTiles = false;
@@ -124,10 +125,23 @@ public class PuzzleBoard : MonoBehaviour
 		return puzzleTiles;
 	}
 
-	private void ShuffleBoard()
+	private IEnumerator ShuffleBoard(int seed, int numMoves, float moveInterval)
 	{
+		Random.InitState(seed);
 
+		for (int i = 0; i < numMoves; i++)
+		{
+			while (isMovingTiles)
+			{
+				yield return null;
+			}
+
+			var adjacentSlots = GetAdjacentSlots(emptySlot);
+			var randomAdjacent = adjacentSlots[Random.Range(0, adjacentSlots.Count)];
+			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, 0.07f));
+		}
 	}
+
 
 	private void InsertTilesToSlots(PuzzleTile[] tiles)
 	{
@@ -140,9 +154,10 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
-	private void CreateEmptySlot()
+	private void SetEmptySlot(PuzzleBoardSlot slot)
 	{
-		puzzleBoardSlots[boardSize.x - 1].SetEmpty(true);
+		emptySlot = slot;
+		emptySlot.SetEmpty(true);
 	}
 
 	private void InitializeBoard(Texture2D texture)
@@ -150,8 +165,8 @@ public class PuzzleBoard : MonoBehaviour
 		var tiles = CreateTilesFromTexture(texture);
 		CreateSlotsForTiles(tiles);
 		InsertTilesToSlots(tiles);
-		CreateEmptySlot();
-		ShuffleBoard();
+		SetEmptySlot(puzzleBoardSlots[boardSize.x - 1]);
+		StartCoroutine(ShuffleBoard(0, 300, 0.07f));
 	}
 
 	private void HandleInput()
