@@ -8,9 +8,40 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
 	[SerializeField] private Vector2Int boardSize;
+	[SerializeField] private float tilePositionLerpDuration = 0.5f;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
+
+	private bool isMovingTiles;
+
+	private IEnumerator<PuzzleBoardSlot> MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot)
+	{
+		if (!isMovingTiles)
+		{
+			isMovingTiles = true;
+			var tile = originSlot.InsertedTile;
+
+			float t = 0.0f;
+			while (t < tilePositionLerpDuration)
+			{
+				t += Time.deltaTime;
+				float ratio = t / tilePositionLerpDuration;
+
+				tile.transform.position = Vector3.Lerp(originSlot.transform.position, destinationSlot.transform.position, ratio);
+				yield return null;
+			}
+
+			tile.transform.position = destinationSlot.transform.position;
+
+			originSlot.SetEmpty(true);
+			destinationSlot.InsertTile(tile);
+
+			isMovingTiles = false;
+		}
+
+		yield return null;
+	}
 
 	private PuzzleBoardSlot GetSlotByCoordinates(int x, int y)
 	{
@@ -108,12 +139,7 @@ public class PuzzleBoard : MonoBehaviour
 		CreateEmptySlot();
 	}
 
-	private void Start()
-	{
-		InitializeBoard(availableTextures[0]);
-	}
-
-	private void Update()
+	private void HandleInput()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -125,9 +151,23 @@ public class PuzzleBoard : MonoBehaviour
 				var slot = hit.collider.GetComponentInParent<PuzzleBoardSlot>();
 				if (slot)
 				{
-					Debug.Log(GetAdjacentEmptySlot(slot));
+					var adjacentEmptySlot = GetAdjacentEmptySlot(slot);
+					if (adjacentEmptySlot && !isMovingTiles)
+					{
+						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot));
+					}
 				}
 			}
 		}
+	}
+
+	private void Start()
+	{
+		InitializeBoard(availableTextures[0]);
+	}
+
+	private void Update()
+	{
+		HandleInput();
 	}
 }

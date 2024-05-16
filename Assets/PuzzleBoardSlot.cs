@@ -13,6 +13,8 @@ public class PuzzleBoardSlot : MonoBehaviour
 
 	public Vector2Int GridCoordinates => gridCoordinates;
 
+	public PuzzleTile InsertedTile => insertedTile;
+
 	public void Prepare(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
 	{
 		name = "PuzzleBoardSlot_" + gridCoordinates.x + "_" + gridCoordinates.y;
