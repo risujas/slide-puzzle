@@ -1,0 +1,7 @@
+Fix the puzzle board size, regardless of how many pieces of it has (currently 1 piece = 1 unit, so less pieces means a smaller board)
+
+Allow the user to manually drag the tiles instead of just clicking to move them
+
+Add sound effects for moving pieces, background music, victory message, etc
+
+Allow moving the empty slot with keyboard 
