@@ -13,9 +13,21 @@ public class PuzzleBoard : MonoBehaviour
 	private Vector2Int tileSize;
 
 	private bool isMovingTiles;
-	private PuzzleBoardSlot emptySlot;
 
-	private void SetBoardPosition()
+	private PuzzleBoardSlot GetEmptySlot()
+	{
+		foreach (var s in puzzleBoardSlots)
+		{
+			if (s.IsEmpty)
+			{
+				return s;
+			}
+		}
+
+		return null;
+	}
+
+	private void CenterBoardOnWorldOrigin()
 	{
 		Vector3 pos = Vector3.zero;
 		pos.x = -(boardSize.x / 2.0f) + 0.5f;
@@ -40,7 +52,7 @@ public class PuzzleBoard : MonoBehaviour
 				yield return null;
 			}
 
-			SetEmptySlot(originSlot);
+			originSlot.SetEmpty();
 			destinationSlot.InsertTile(tile);
 
 			isMovingTiles = false;
@@ -96,7 +108,7 @@ public class PuzzleBoard : MonoBehaviour
 		var adjacentSlots = GetAdjacentSlots(firstSlot);
 		foreach (var slot in adjacentSlots)
 		{
-			if (slot.TreatAsEmpty)
+			if (slot.IsEmpty)
 			{
 				return slot;
 			}
@@ -153,6 +165,7 @@ public class PuzzleBoard : MonoBehaviour
 				yield return null;
 			}
 
+			var emptySlot = GetEmptySlot();
 			var adjacentSlots = GetAdjacentSlots(emptySlot, previousEmptySlot);
 			var randomAdjacent = adjacentSlots[Random.Range(0, adjacentSlots.Count)];
 			previousEmptySlot = emptySlot;
@@ -173,19 +186,15 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
-	private void SetEmptySlot(PuzzleBoardSlot slot)
-	{
-		emptySlot = slot;
-		emptySlot.SetEmpty(true);
-	}
-
 	private void InitializeBoard(Texture2D texture)
 	{
 		var tiles = CreateTilesFromTexture(texture);
+
 		CreateSlotsForTiles(tiles);
-		SetBoardPosition();
+		CenterBoardOnWorldOrigin();
+
 		InsertTilesToSlots(tiles);
-		SetEmptySlot(puzzleBoardSlots[boardSize.x - 1]);
+		puzzleBoardSlots[boardSize.x - 1].SetEmpty();
 		StartCoroutine(ShuffleBoard(0, 1000, 0.00f));
 	}
 

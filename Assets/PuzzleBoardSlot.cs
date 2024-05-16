@@ -2,18 +2,11 @@ using UnityEngine;
 
 public class PuzzleBoardSlot : MonoBehaviour
 {
-	private PuzzleTile correctTile;
-	private PuzzleTile insertedTile;
-	private Vector2Int gridCoordinates;
-	private bool treatAsEmpty;
-
-	public bool TreatAsEmpty => treatAsEmpty;
-
-	public bool HasCorrectTile => (insertedTile == correctTile);
-
-	public Vector2Int GridCoordinates => gridCoordinates;
-
-	public PuzzleTile InsertedTile => insertedTile;
+	public PuzzleTile CorrectTile { get; private set; }
+	public PuzzleTile InsertedTile { get; private set; }
+	public Vector2Int GridCoordinates { get; private set; }
+	public bool IsEmpty => InsertedTile == null;
+	public bool HasCorrectTile => (InsertedTile == CorrectTile);
 
 	public void Prepare(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
 	{
@@ -22,21 +15,19 @@ public class PuzzleBoardSlot : MonoBehaviour
 		transform.parent = board.transform;
 		transform.position = (Vector3.right * gridCoordinates.x) + (Vector3.up * gridCoordinates.y);
 
-		this.correctTile = correctTile;
-		this.gridCoordinates = gridCoordinates;
+		CorrectTile = correctTile;
+		GridCoordinates = gridCoordinates;
 	}
 
 	public void InsertTile(PuzzleTile tile)
 	{
-		insertedTile = tile;
-		insertedTile.transform.position = transform.position;
-		insertedTile.transform.parent = transform;
-		SetEmpty(false);
+		InsertedTile = tile;
+		InsertedTile.transform.position = transform.position;
+		InsertedTile.transform.parent = transform;
 	}
 
-	public void SetEmpty(bool isEmpty)
+	public void SetEmpty()
 	{
-		treatAsEmpty = isEmpty;
-		insertedTile.gameObject.SetActive(!treatAsEmpty);
+		InsertedTile = null;
 	}
 }
