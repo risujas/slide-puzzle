@@ -8,6 +8,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
 	[SerializeField] private int boardSize = 3;
+	[SerializeField] private float tileMovementSpeed = 0.2f;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
@@ -259,7 +260,7 @@ public class PuzzleBoard : MonoBehaviour
 					var adjacentEmptySlot = GetAdjacentEmptySlot(slot);
 					if (adjacentEmptySlot && !isMovingTiles)
 					{
-						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot, 0.2f, true));
+						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot, tileMovementSpeed, true));
 					}
 				}
 			}
