@@ -18,19 +18,6 @@ public class PuzzleBoard : MonoBehaviour
 	private bool isShuffling = false;
 	private bool isMovingTiles = false;
 
-	private PuzzleBoardSlot GetEmptySlot()
-	{
-		foreach (var s in puzzleBoardSlots)
-		{
-			if (s.IsEmpty)
-			{
-				return s;
-			}
-		}
-
-		return null;
-	}
-
 	private void CenterBoardOnWorldOrigin()
 	{
 		Vector3 pos = Vector3.zero;
@@ -44,7 +31,7 @@ public class PuzzleBoard : MonoBehaviour
 		Camera.main.orthographicSize = (boardSize / 2.0f) + boardMargin;
 	}
 
-	private void SetBackgroundSize()
+	private void SetBackgroundTransform()
 	{
 		Vector3 pos = transform.position;
 		pos.x -= 0.5f + (backgroundBorderThickness * 0.5f);
@@ -83,6 +70,18 @@ public class PuzzleBoard : MonoBehaviour
 		}
 
 		yield return null;
+	}
+
+	private PuzzleBoardSlot GetEmptySlot()
+	{
+		foreach (var s in puzzleBoardSlots)
+		{
+			if (s.IsEmpty)
+			{
+				return s;
+			}
+		}
+		return null;
 	}
 
 	private PuzzleBoardSlot GetSlotByCoordinates(int x, int y)
@@ -251,7 +250,7 @@ public class PuzzleBoard : MonoBehaviour
 
 		CenterBoardOnWorldOrigin();
 		SetCameraSize(1.0f);
-		SetBackgroundSize();
+		SetBackgroundTransform();
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
