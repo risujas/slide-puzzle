@@ -304,7 +304,7 @@ public class PuzzleBoard : MonoBehaviour
 			HandleInput();
 			if (CheckForCompletion())
 			{
-				GetEmptySlot()?.Restore();
+				GetEmptySlot()?.InsertCorrectTile();
 			}
 		}
 	}

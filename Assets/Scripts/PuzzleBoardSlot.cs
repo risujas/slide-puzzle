@@ -27,15 +27,14 @@ public class PuzzleBoardSlot : MonoBehaviour
 		InsertedTile.transform.position = transform.position;
 		InsertedTile.transform.parent = transform;
 	}
+	public void InsertCorrectTile()
+	{
+		InsertTile(CorrectTile);
+	}
 
 	public void SetEmpty()
 	{
 		InsertedTile.gameObject.SetActive(false);
 		InsertedTile = null;
-	}
-
-	public void Restore()
-	{
-		InsertTile(CorrectTile);
 	}
 }
