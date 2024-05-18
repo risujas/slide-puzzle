@@ -41,12 +41,17 @@ public class PuzzleBoard : MonoBehaviour
 		Camera.main.orthographicSize = (boardSize / 2.0f) + boardMargin;
 	}
 
-	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
+	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration, bool playSound)
 	{
 		if (!isMovingTiles)
 		{
 			isMovingTiles = true;
 			var tile = originSlot.InsertedTile;
+
+			if (playSound)
+			{
+				tile.PlayMotionSound();
+			}
 
 			float t = 0.0f;
 			while (t < duration)
@@ -177,7 +182,7 @@ public class PuzzleBoard : MonoBehaviour
 			var randomAdjacent = adjacentSlots[Random.Range(0, adjacentSlots.Count)];
 			previousEmptySlot = emptySlot;
 
-			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, moveInterval));
+			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, moveInterval, false));
 		}
 
 		bool emptySlotAtCorrectPosition = false;
@@ -193,12 +198,12 @@ public class PuzzleBoard : MonoBehaviour
 			if (emptySlot.GridCoordinates.x < boardSize - 1)
 			{
 				var nextSlot = GetSlotByCoordinates(emptySlot.GridCoordinates.x + 1, emptySlot.GridCoordinates.y);
-				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval));
+				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval, false));
 			}
 			else if (emptySlot.GridCoordinates.y > 0)
 			{
 				var nextSlot = GetSlotByCoordinates(emptySlot.GridCoordinates.x, emptySlot.GridCoordinates.y - 1);
-				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval));
+				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval, false));
 			}
 			else
 			{
@@ -254,7 +259,7 @@ public class PuzzleBoard : MonoBehaviour
 					var adjacentEmptySlot = GetAdjacentEmptySlot(slot);
 					if (adjacentEmptySlot && !isMovingTiles)
 					{
-						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot, 0.3f));
+						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot, 0.2f, true));
 					}
 				}
 			}
