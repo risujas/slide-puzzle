@@ -7,7 +7,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private List<Texture2D> availableTextures = new List<Texture2D>();
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
-	[SerializeField] private int boardSize;
+	[SerializeField] private int boardSize = 3;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
