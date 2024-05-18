@@ -7,7 +7,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private List<Texture2D> availableTextures = new List<Texture2D>();
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
-	[SerializeField] private Vector2Int boardSize;
+	[SerializeField] private int boardSize;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
@@ -31,14 +31,14 @@ public class PuzzleBoard : MonoBehaviour
 	private void CenterBoardOnWorldOrigin()
 	{
 		Vector3 pos = Vector3.zero;
-		pos.x = -(boardSize.x / 2.0f) + 0.5f;
-		pos.y = -(boardSize.y / 2.0f) + 0.5f;
+		pos.x = -(boardSize / 2.0f) + 0.5f;
+		pos.y = -(boardSize / 2.0f) + 0.5f;
 		transform.position = pos;
 	}
 
 	private void SetCameraSize(float boardMargin)
 	{
-		Camera.main.orthographicSize = (boardSize.y / 2.0f) + boardMargin;
+		Camera.main.orthographicSize = (boardSize / 2.0f) + boardMargin;
 	}
 
 	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
@@ -69,7 +69,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private PuzzleBoardSlot GetSlotByCoordinates(int x, int y)
 	{
-		return puzzleBoardSlots[x + y * boardSize.x];
+		return puzzleBoardSlots[x + y * boardSize];
 	}
 
 	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot, PuzzleBoardSlot ignoredSlot)
@@ -84,7 +84,7 @@ public class PuzzleBoard : MonoBehaviour
 			int secondSlotX = firstSlot.GridCoordinates.x + offsetX[i];
 			int secondSlotY = firstSlot.GridCoordinates.y + offsetY[i];
 
-			if (secondSlotX >= 0 && secondSlotX < boardSize.x && secondSlotY >= 0 && secondSlotY < boardSize.y)
+			if (secondSlotX >= 0 && secondSlotX < boardSize && secondSlotY >= 0 && secondSlotY < boardSize)
 			{
 				PuzzleBoardSlot secondSlot = GetSlotByCoordinates(secondSlotX, secondSlotY);
 				if (secondSlot == ignoredSlot)
@@ -125,13 +125,13 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void CreateSlotsForTiles(PuzzleTile[] unshuffledTiles)
 	{
-		puzzleBoardSlots = new PuzzleBoardSlot[boardSize.x * boardSize.y];
+		puzzleBoardSlots = new PuzzleBoardSlot[boardSize * boardSize];
 
-		for (int y = 0; y < boardSize.y; y++)
+		for (int y = 0; y < boardSize; y++)
 		{
-			for (int x = 0; x < boardSize.x; x++)
+			for (int x = 0; x < boardSize; x++)
 			{
-				int index = x + y * boardSize.x;
+				int index = x + y * boardSize;
 				puzzleBoardSlots[index] = Instantiate(puzzleSlotPrefab).GetComponent<PuzzleBoardSlot>();
 				puzzleBoardSlots[index].Initialize(this, unshuffledTiles[index], new Vector2Int(x, y));
 			}
@@ -140,19 +140,19 @@ public class PuzzleBoard : MonoBehaviour
 
 	private PuzzleTile[] CreateTilesFromTexture(Texture2D source)
 	{
-		tileSize.x = source.width / boardSize.x;
-		tileSize.y = source.height / boardSize.y;
+		tileSize.x = source.width / boardSize;
+		tileSize.y = source.height / boardSize;
 
-		var puzzleTiles = new PuzzleTile[boardSize.x * boardSize.y];
+		var puzzleTiles = new PuzzleTile[boardSize * boardSize];
 
-		for (int y = 0; y < boardSize.y; y++)
+		for (int y = 0; y < boardSize; y++)
 		{
-			for (int x = 0; x < boardSize.x; x++)
+			for (int x = 0; x < boardSize; x++)
 			{
 				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleTile>();
 				tile.Initialize(source, new Vector2Int(x, y), tileSize);
 
-				puzzleTiles[x + y * boardSize.x] = tile;
+				puzzleTiles[x + y * boardSize] = tile;
 			}
 		}
 
@@ -190,7 +190,7 @@ public class PuzzleBoard : MonoBehaviour
 
 			var emptySlot = GetEmptySlot();
 
-			if (emptySlot.GridCoordinates.x < boardSize.x - 1)
+			if (emptySlot.GridCoordinates.x < boardSize - 1)
 			{
 				var nextSlot = GetSlotByCoordinates(emptySlot.GridCoordinates.x + 1, emptySlot.GridCoordinates.y);
 				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval));
@@ -212,18 +212,18 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void InsertTilesToSlots(PuzzleTile[] tiles)
 	{
-		for (int y = 0; y < boardSize.y; y++)
+		for (int y = 0; y < boardSize; y++)
 		{
-			for (int x = 0; x < boardSize.x; x++)
+			for (int x = 0; x < boardSize; x++)
 			{
-				puzzleBoardSlots[x + y * boardSize.x].InsertTile(tiles[x + y * boardSize.x]);
+				puzzleBoardSlots[x + y * boardSize].InsertTile(tiles[x + y * boardSize]);
 			}
 		}
 	}
 
 	private void SetEmptyCornerTile()
 	{
-		puzzleBoardSlots[boardSize.x - 1].SetEmpty();
+		puzzleBoardSlots[boardSize - 1].SetEmpty();
 	}
 
 	private void InitializeBoard(Texture2D texture)
