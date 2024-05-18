@@ -33,4 +33,9 @@ public class PuzzleBoardSlot : MonoBehaviour
 		InsertedTile.gameObject.SetActive(false);
 		InsertedTile = null;
 	}
+
+	public void Restore()
+	{
+		InsertTile(CorrectTile);
+	}
 }

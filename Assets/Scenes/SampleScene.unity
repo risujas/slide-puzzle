@@ -378,7 +378,7 @@ MonoBehaviour:
   puzzleTilePrefab: {fileID: 738140893496108164, guid: 2c91e4d65b4f1bf4a945a7c4b99d5279, type: 3}
   background: {fileID: 1844628110}
   backgroundBorderThickness: 0.2
-  boardSize: 3
+  boardSize: 2
   tileMovementSpeed: 0.2
 --- !u!4 &1207684550
 Transform:
