@@ -36,6 +36,11 @@ public class PuzzleBoard : MonoBehaviour
 		transform.position = pos;
 	}
 
+	private void SetCameraSize(float boardMargin)
+	{
+		Camera.main.orthographicSize = (boardSize.y / 2.0f) + boardMargin;
+	}
+
 	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration)
 	{
 		if (!isMovingTiles)
@@ -201,6 +206,7 @@ public class PuzzleBoard : MonoBehaviour
 
 		CreateSlotsForTiles(tiles);
 		CenterBoardOnWorldOrigin();
+		SetCameraSize(1.0f);
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
