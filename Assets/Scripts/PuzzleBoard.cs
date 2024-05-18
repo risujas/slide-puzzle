@@ -133,7 +133,7 @@ public class PuzzleBoard : MonoBehaviour
 			{
 				int index = x + y * boardSize.x;
 				puzzleBoardSlots[index] = Instantiate(puzzleSlotPrefab).GetComponent<PuzzleBoardSlot>();
-				puzzleBoardSlots[index].Prepare(this, unshuffledTiles[index], new Vector2Int(x, y));
+				puzzleBoardSlots[index].Initialize(this, unshuffledTiles[index], new Vector2Int(x, y));
 			}
 		}
 	}
@@ -150,7 +150,7 @@ public class PuzzleBoard : MonoBehaviour
 			for (int x = 0; x < boardSize.x; x++)
 			{
 				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleTile>();
-				tile.Create(source, new Vector2Int(x, y), tileSize);
+				tile.Initialize(source, new Vector2Int(x, y), tileSize);
 
 				puzzleTiles[x + y * boardSize.x] = tile;
 			}

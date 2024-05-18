@@ -8,7 +8,7 @@ public class PuzzleBoardSlot : MonoBehaviour
 	public bool IsEmpty => InsertedTile == null;
 	public bool HasCorrectTile => (InsertedTile == CorrectTile);
 
-	public void Prepare(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
+	public void Initialize(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
 	{
 		name = "PuzzleBoardSlot_" + gridCoordinates.x + "_" + gridCoordinates.y;
 
