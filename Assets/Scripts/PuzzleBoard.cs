@@ -7,6 +7,8 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private List<Texture2D> availableTextures = new List<Texture2D>();
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
+	[SerializeField] private GameObject background;
+	[SerializeField] private float backgroundBorderThickness = 0.2f;
 	[SerializeField] private int boardSize = 3;
 	[SerializeField] private float tileMovementSpeed = 0.2f;
 
@@ -40,6 +42,16 @@ public class PuzzleBoard : MonoBehaviour
 	private void SetCameraSize(float boardMargin)
 	{
 		Camera.main.orthographicSize = (boardSize / 2.0f) + boardMargin;
+	}
+
+	private void SetBackgroundSize()
+	{
+		Vector3 pos = transform.position;
+		pos.x -= 0.5f + (backgroundBorderThickness * 0.5f);
+		pos.y -= 0.5f + (backgroundBorderThickness * 0.5f);
+		background.transform.position = pos;
+
+		background.transform.localScale = Vector3.one * (boardSize + backgroundBorderThickness);
 	}
 
 	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration, bool playSound)
@@ -235,10 +247,11 @@ public class PuzzleBoard : MonoBehaviour
 	private void InitializeBoard(Texture2D texture)
 	{
 		var tiles = CreateTilesFromTexture(texture);
-
 		CreateSlotsForTiles(tiles);
+
 		CenterBoardOnWorldOrigin();
 		SetCameraSize(1.0f);
+		SetBackgroundSize();
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
