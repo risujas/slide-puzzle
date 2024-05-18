@@ -180,6 +180,32 @@ public class PuzzleBoard : MonoBehaviour
 			StartCoroutine(MoveTileBetweenSlots(randomAdjacent, emptySlot, moveInterval));
 		}
 
+		bool emptySlotAtCorrectPosition = false;
+		while (!emptySlotAtCorrectPosition)
+		{
+			while (isMovingTiles)
+			{
+				yield return null;
+			}
+
+			var emptySlot = GetEmptySlot();
+
+			if (emptySlot.GridCoordinates.x < boardSize.x - 1)
+			{
+				var nextSlot = GetSlotByCoordinates(emptySlot.GridCoordinates.x + 1, emptySlot.GridCoordinates.y);
+				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval));
+			}
+			else if (emptySlot.GridCoordinates.y > 0)
+			{
+				var nextSlot = GetSlotByCoordinates(emptySlot.GridCoordinates.x, emptySlot.GridCoordinates.y - 1);
+				StartCoroutine(MoveTileBetweenSlots(nextSlot, emptySlot, moveInterval));
+			}
+			else
+			{
+				emptySlotAtCorrectPosition = true;
+			}
+		}
+
 		isShuffling = false;
 	}
 
