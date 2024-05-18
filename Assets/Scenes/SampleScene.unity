@@ -200,7 +200,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -374,6 +374,7 @@ MonoBehaviour:
   puzzleSlotPrefab: {fileID: 7722846631086609518, guid: 72802e590c80e0141a585675e8b110ff, type: 3}
   puzzleTilePrefab: {fileID: 738140893496108164, guid: 2c91e4d65b4f1bf4a945a7c4b99d5279, type: 3}
   background: {fileID: 1844628110}
+  backgroundBorderThickness: 0.2
   boardSize: 4
   tileMovementSpeed: 0.2
 --- !u!4 &1207684550
