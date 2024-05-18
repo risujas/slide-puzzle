@@ -1,3 +1,4 @@
+Before shuffling, depending on the difficulty, make certain tiles untouchable so they're locked in place and already correct
 
 Allow the user to manually drag the tiles instead of just clicking to move them
 
