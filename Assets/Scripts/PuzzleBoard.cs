@@ -83,21 +83,14 @@ public class PuzzleBoard : MonoBehaviour
 		yield return null;
 	}
 
-	private PuzzleBoardSlot GetEmptySlot()
-	{
-		foreach (var s in puzzleBoardSlots)
-		{
-			if (s.IsEmpty)
-			{
-				return s;
-			}
-		}
-		return null;
-	}
-
 	private PuzzleBoardSlot GetSlotByCoordinates(int x, int y)
 	{
 		return puzzleBoardSlots[x + y * boardSize];
+	}
+
+	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot)
+	{
+		return GetAdjacentSlots(firstSlot, null);
 	}
 
 	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot, PuzzleBoardSlot ignoredSlot)
@@ -132,9 +125,16 @@ public class PuzzleBoard : MonoBehaviour
 		return adjacentSlots;
 	}
 
-	private List<PuzzleBoardSlot> GetAdjacentSlots(PuzzleBoardSlot firstSlot)
+	private PuzzleBoardSlot GetEmptySlot()
 	{
-		return GetAdjacentSlots(firstSlot, null);
+		foreach (var s in puzzleBoardSlots)
+		{
+			if (s.IsEmpty)
+			{
+				return s;
+			}
+		}
+		return null;
 	}
 
 	private PuzzleBoardSlot GetAdjacentEmptySlot(PuzzleBoardSlot firstSlot)
