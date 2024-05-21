@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PuzzleTile : MonoBehaviour
 {
-	[SerializeField] private RandomSoundPlayer motionSoundPlayer;
-
 	private SpriteRenderer spriteRenderer;
 
 	public void Initialize(Texture2D sourceTexture, Vector2Int puzzleBoardCoordinates, Vector2Int tileSize)
@@ -14,11 +12,6 @@ public class PuzzleTile : MonoBehaviour
 
 		gameObject.name = "PuzzleTile_" + puzzleBoardCoordinates.x + "_" + puzzleBoardCoordinates.y; ;
 		spriteRenderer.sprite = sprite;
-	}
-
-	public void PlayMotionSound()
-	{
-		motionSoundPlayer.Play();
 	}
 
 	private void Awake()

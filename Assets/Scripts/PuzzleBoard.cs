@@ -11,6 +11,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private float backgroundBorderThickness = 0.2f;
 	[SerializeField] private int boardSize = 3;
 	[SerializeField] private float tileMovementSpeed = 0.2f;
+	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private Vector2Int tileSize;
@@ -53,7 +54,7 @@ public class PuzzleBoard : MonoBehaviour
 
 				if (playSound)
 				{
-					tile.PlayMotionSound();
+					tileMotionSoundPlayer.Play();
 				}
 
 				float t = 0.0f;
