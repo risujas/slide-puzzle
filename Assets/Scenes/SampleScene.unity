@@ -617,14 +617,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b016ad585a39c7d4ea4371d52df736a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableTextures:
+  puzzleGraphics:
   - {fileID: 2800000, guid: 4c65c9e087fdc6a438d780add2c5936f, type: 3}
   - {fileID: 2800000, guid: 3d3201711173341499a9c0c61690b6b0, type: 3}
   - {fileID: 2800000, guid: 490b0757d6199c04897fad7569712b9a, type: 3}
   - {fileID: 2800000, guid: 54695a33ba7a2314f82791a53f39ad22, type: 3}
   puzzleSlotPrefab: {fileID: 7722846631086609518, guid: 72802e590c80e0141a585675e8b110ff, type: 3}
   puzzleTilePrefab: {fileID: 738140893496108164, guid: 2c91e4d65b4f1bf4a945a7c4b99d5279, type: 3}
-  background: {fileID: 1844628110}
+  puzzleBoardBackground: {fileID: 1844628110}
   backgroundBorderThickness: 0.2
   boardSize: 3
   tileMovementSpeed: 0.2

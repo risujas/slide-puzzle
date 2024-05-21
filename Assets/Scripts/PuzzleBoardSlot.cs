@@ -6,7 +6,7 @@ public class PuzzleBoardSlot : MonoBehaviour
 	public PuzzleTile InsertedTile { get; private set; }
 	public Vector2Int GridCoordinates { get; private set; }
 	public bool IsEmpty => InsertedTile == null;
-	public bool HasCorrectTile => (InsertedTile == CorrectTile);
+	public bool HasCorrectTile => InsertedTile == CorrectTile;
 
 	public void Initialize(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
 	{

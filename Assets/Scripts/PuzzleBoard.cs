@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PuzzleBoard : MonoBehaviour
 {
-	[SerializeField] private List<Texture2D> availableTextures = new List<Texture2D>();
+	[SerializeField] private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
-	[SerializeField] private GameObject background;
+	[SerializeField] private GameObject puzzleBoardBackground;
 	[SerializeField] private float backgroundBorderThickness = 0.2f;
 	[SerializeField] private int boardSize = 3;
 	[SerializeField] private float tileMovementSpeed = 0.2f;
@@ -36,35 +36,39 @@ public class PuzzleBoard : MonoBehaviour
 		Vector3 pos = transform.position;
 		pos.x -= 0.5f + (backgroundBorderThickness * 0.5f);
 		pos.y -= 0.5f + (backgroundBorderThickness * 0.5f);
-		background.transform.position = pos;
+		puzzleBoardBackground.transform.position = pos;
 
-		background.transform.localScale = Vector3.one * (boardSize + backgroundBorderThickness);
+		puzzleBoardBackground.transform.localScale = Vector3.one * (boardSize + backgroundBorderThickness);
 	}
 
 	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration, bool playSound)
 	{
 		if (!isMovingTiles)
 		{
-			isMovingTiles = true;
 			var tile = originSlot.InsertedTile;
 
-			if (playSound)
+			if (tile != null)
 			{
-				tile.PlayMotionSound();
+				isMovingTiles = true;
+
+				if (playSound)
+				{
+					tile.PlayMotionSound();
+				}
+
+				float t = 0.0f;
+				while (t < duration)
+				{
+					t += Time.deltaTime;
+					float ratio = t / duration;
+
+					tile.transform.position = Vector3.Lerp(originSlot.transform.position, destinationSlot.transform.position, ratio);
+					yield return null;
+				}
+
+				originSlot.SetEmpty();
+				destinationSlot.InsertTile(tile);
 			}
-
-			float t = 0.0f;
-			while (t < duration)
-			{
-				t += Time.deltaTime;
-				float ratio = t / duration;
-
-				tile.transform.position = Vector3.Lerp(originSlot.transform.position, destinationSlot.transform.position, ratio);
-				yield return null;
-			}
-
-			originSlot.SetEmpty();
-			destinationSlot.InsertTile(tile);
 
 			isMovingTiles = false;
 		}
@@ -294,7 +298,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Start()
 	{
-		InitializeBoard(availableTextures[0]);
+		InitializeBoard(puzzleGraphics[0]);
 	}
 
 	private void Update()
