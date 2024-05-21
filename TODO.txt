@@ -4,4 +4,18 @@ Allow the user to manually drag the tiles instead of just clicking to move them
 
 Add sound effects for moving pieces, background music, victory message, etc
 
-Allow moving the empty slot with keyboard 
+Allow moving the empty slot with keyboard
+
+Add a drop shadow / frame effect to the tiles
+
+Add an animation / let the user drag in the final piece when the rest of the puzzle is correct
+
+Add UI for:
+	Selecting the puzzle graphic < o o o x o >
+	Resetting the puzzle
+	Toggling music / sound effects
+	Auto-solve: Find the correct solution
+	Hint: find the next optimal move
+	Music jukebox: next song, volume, etc
+	Title graphic
+	
