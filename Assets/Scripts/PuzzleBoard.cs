@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PuzzleBoard : MonoBehaviour
 {
-	[SerializeField] private List<Texture2D> puzzleGraphics = new List<Texture2D>();
+	[Header("Prefabs")]
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
+
+	[Header("Board properties")]
+	[SerializeField] private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	[SerializeField] private GameObject puzzleBoardBackground;
 	[SerializeField] private float backgroundBorderThickness = 0.2f;
 	[SerializeField] private int boardSize = 3;
+
+	[Header("Tile behaviour")]
 	[SerializeField] private float tileMovementSpeed = 0.2f;
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 
