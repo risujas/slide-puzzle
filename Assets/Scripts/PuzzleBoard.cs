@@ -303,6 +303,11 @@ public class PuzzleBoard : MonoBehaviour
 		return true;
 	}
 
+	private void FinishGame()
+	{
+		GetEmptySlot()?.InsertCorrectTile();
+	}
+
 	private void Start()
 	{
 		InitializeBoard(puzzleGraphics[0]);
@@ -315,7 +320,7 @@ public class PuzzleBoard : MonoBehaviour
 			HandleInput();
 			if (CheckForCompletion())
 			{
-				GetEmptySlot()?.InsertCorrectTile();
+				FinishGame();
 			}
 		}
 	}
