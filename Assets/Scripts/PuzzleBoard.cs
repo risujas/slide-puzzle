@@ -31,7 +31,16 @@ public class PuzzleBoard : MonoBehaviour
 	private bool isMovingTiles = false;
 
 	private bool puzzleIsCompleted = false;
-	private bool triggeredFinalTile = false;
+
+	private int finalTileAnimationStage = 0;
+
+	private Vector3 finalTileStage1TargetPos
+	{
+		get
+		{
+			return transform.position + (Vector3.right * (boardSize + 0.5f));
+		}
+	}
 
 	private void CenterBoardOnWorldOrigin()
 	{
@@ -314,7 +323,7 @@ public class PuzzleBoard : MonoBehaviour
 				var tile = hit.collider.GetComponent<PuzzleTile>();
 				if (tile == finalTileSlot.CorrectTile)
 				{
-					triggeredFinalTile = true;
+					finalTileAnimationStage = 1;
 				}
 			}
 		}
@@ -340,9 +349,14 @@ public class PuzzleBoard : MonoBehaviour
 		Vector3 finalTileTargetPos;
 		Quaternion finalTileTargetRot;
 
-		if (triggeredFinalTile)
+		if (finalTileAnimationStage == 1)
 		{
-			finalTileTargetPos = transform.position + (Vector3.right * (boardSize + 0.5f));
+			finalTileTargetPos = finalTileStage1TargetPos;
+			finalTileTargetRot = Quaternion.identity;
+		}
+		else if (finalTileAnimationStage == 2)
+		{
+			finalTileTargetPos = finalTileSlot.transform.position;
 			finalTileTargetRot = Quaternion.identity;
 		}
 		else
@@ -351,8 +365,23 @@ public class PuzzleBoard : MonoBehaviour
 			finalTileTargetRot = puzzleIsCompleted ? Quaternion.Euler(0f, 0f, -45.0f) : Quaternion.identity;
 		}
 
-		finalTile.transform.position = Vector3.Lerp(finalTile.transform.position, finalTileTargetPos, Time.deltaTime * 3.0f);
+		finalTile.transform.position = Vector3.Lerp(finalTile.transform.position, finalTileTargetPos, Time.deltaTime * 4.0f);
 		finalTile.transform.rotation = Quaternion.Lerp(finalTile.transform.rotation, finalTileTargetRot, Time.deltaTime * 5.0f);
+	}
+
+	private void HandleFinalTileStages()
+	{
+		var finalTile = finalTileSlot.CorrectTile;
+
+		if (finalTileAnimationStage == 1)
+		{
+			float distance = Vector3.Distance(finalTile.transform.position, finalTileStage1TargetPos);
+			if (distance < 0.1f)
+			{
+				finalTileAnimationStage = 2;
+				finalTile.GetComponent<SpriteRenderer>().sortingLayerName = "PuzzleBoardTiles";
+			}
+		}
 	}
 
 	private void Start()
@@ -364,7 +393,7 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		if (!isShuffling)
 		{
-			if (!triggeredFinalTile)
+			if (finalTileAnimationStage == 0)
 			{
 				HandleRegularTileInput();
 				CheckForCompletion();
@@ -373,6 +402,10 @@ public class PuzzleBoard : MonoBehaviour
 				{
 					HandleFinalTileInput();
 				}
+			}
+			else
+			{
+				HandleFinalTileStages();
 			}
 
 			LerpFinalTile();
