@@ -202,7 +202,7 @@ public class PuzzleBoard : MonoBehaviour
 			for (int x = 0; x < boardSize; x++)
 			{
 				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleTile>();
-				tile.Initialize(source, new Vector2Int(x, y), tileSize);
+				tile.Initialize(source, new Vector2Int(x, y), tileSize, boardSize);
 
 				puzzleTiles[x + y * boardSize] = tile;
 			}
@@ -280,6 +280,7 @@ public class PuzzleBoard : MonoBehaviour
 
 		finalTileSlot.CorrectTile.gameObject.SetActive(true);
 		finalTileSlot.CorrectTile.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+		finalTileSlot.CorrectTile.GetComponentInChildren<Canvas>().sortingLayerName = "Default";
 	}
 
 	private void InitializeBoard(Texture2D texture)
@@ -399,6 +400,7 @@ public class PuzzleBoard : MonoBehaviour
 			{
 				finalTileAnimationStage = 2;
 				finalTile.GetComponent<SpriteRenderer>().sortingLayerName = "PuzzleBoardTiles";
+				finalTileSlot.CorrectTile.GetComponentInChildren<Canvas>().sortingLayerName = "PuzzleBoardTiles";
 				tileMotionSoundPlayer.Play();
 			}
 		}
