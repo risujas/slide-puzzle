@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PuzzleBoard : MonoBehaviour
 {
@@ -39,6 +40,19 @@ public class PuzzleBoard : MonoBehaviour
 
 	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
+
+	private IEnumerator LerpToPosition(GameObject obj, Vector3 pos, float threshold, float speed)
+	{
+		float distance = Vector3.Distance(obj.transform.position, pos);
+		while (distance > threshold)
+		{
+			obj.transform.position = Vector3.Lerp(obj.transform.position, pos, Time.deltaTime * speed);
+
+			distance = Vector3.Distance(obj.transform.position, pos);
+			yield return null;
+		}
+		yield return null;
+	}
 
 	private Vector3 finalTileStage1TargetPos
 	{
@@ -363,6 +377,7 @@ public class PuzzleBoard : MonoBehaviour
 		if (finalTileAnimationStage == 1)
 		{
 			finalTileTargetPos = finalTileStage1TargetPos;
+			lerpSpeedModifier = 2.0f;
 		}
 		else if (finalTileAnimationStage == 2)
 		{
@@ -406,9 +421,9 @@ public class PuzzleBoard : MonoBehaviour
 			float distance = Vector3.Distance(finalTile.transform.position, finalTileSlot.transform.position);
 			if (distance < finalTileDistanceThreshold)
 			{
-				finalTile.transform.position = finalTileSlot.transform.position;
 				bellSoundPlayer.Play();
 				enableInteraction = false;
+				StartCoroutine(LerpToPosition(finalTile.gameObject, finalTileSlot.transform.position, 0.001f, 10.0f));
 			}
 		}
 	}
