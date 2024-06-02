@@ -38,6 +38,7 @@ public class PuzzleBoard : MonoBehaviour
 	private bool puzzleWasCompletedThisFrame = false;
 
 	private int finalTileAnimationStage = 0;
+	private float finalTileDistanceThreshold = 0.035f;
 
 	private Vector3 finalTileStage1TargetPos
 	{
@@ -392,7 +393,7 @@ public class PuzzleBoard : MonoBehaviour
 		if (finalTileAnimationStage == 1)
 		{
 			float distance = Vector3.Distance(finalTile.transform.position, finalTileStage1TargetPos);
-			if (distance < 0.01f)
+			if (distance < finalTileDistanceThreshold)
 			{
 				finalTileAnimationStage = 2;
 				finalTile.GetComponent<SpriteRenderer>().sortingLayerName = "PuzzleBoardTiles";
@@ -403,7 +404,7 @@ public class PuzzleBoard : MonoBehaviour
 		if (finalTileAnimationStage == 2)
 		{
 			float distance = Vector3.Distance(finalTile.transform.position, finalTileSlot.transform.position);
-			if (distance < 0.01f)
+			if (distance < finalTileDistanceThreshold)
 			{
 				finalTile.transform.position = finalTileSlot.transform.position;
 				bellSoundPlayer.Play();
