@@ -1085,7 +1085,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 54695a33ba7a2314f82791a53f39ad22, type: 3}
   puzzleBoardBackground: {fileID: 1844628110}
   backgroundBorderThickness: 0.2
-  boardSize: 2
+  boardSize: 3
   tileMovementSpeed: 0.2
   tileMotionSoundPlayer: {fileID: 1243942330}
   popSoundPlayer: {fileID: 332792806}
