@@ -21,6 +21,7 @@ public class PuzzleBoard : MonoBehaviour
 	[Header("Sounds")]
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 	[SerializeField] private RandomSoundPlayer popSoundPlayer;
+	[SerializeField] private RandomSoundPlayer bellSoundPlayer;
 
 	[Header("Layer Masks")]
 	[SerializeField] private LayerMask tileLayerMask;
@@ -30,7 +31,7 @@ public class PuzzleBoard : MonoBehaviour
 	private PuzzleBoardSlot finalTileSlot;
 	private Vector2Int tileSize;
 
-	private bool isShuffling = false;
+	private bool enableInteraction = false;
 	private bool isMovingTiles = false;
 
 	private bool puzzleIsCompleted = false;
@@ -210,7 +211,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private IEnumerator ShuffleBoard(int seed, int numMoves, float moveInterval)
 	{
-		isShuffling = true;
+		enableInteraction = false;
 		Random.InitState(seed);
 		PuzzleBoardSlot previousEmptySlot = null;
 
@@ -255,7 +256,7 @@ public class PuzzleBoard : MonoBehaviour
 			}
 		}
 
-		isShuffling = false;
+		enableInteraction = true;
 	}
 
 
@@ -391,11 +392,22 @@ public class PuzzleBoard : MonoBehaviour
 		if (finalTileAnimationStage == 1)
 		{
 			float distance = Vector3.Distance(finalTile.transform.position, finalTileStage1TargetPos);
-			if (distance < 0.1f)
+			if (distance < 0.01f)
 			{
 				finalTileAnimationStage = 2;
 				finalTile.GetComponent<SpriteRenderer>().sortingLayerName = "PuzzleBoardTiles";
 				tileMotionSoundPlayer.Play();
+			}
+		}
+
+		if (finalTileAnimationStage == 2)
+		{
+			float distance = Vector3.Distance(finalTile.transform.position, finalTileSlot.transform.position);
+			if (distance < 0.01f)
+			{
+				finalTile.transform.position = finalTileSlot.transform.position;
+				bellSoundPlayer.Play();
+				enableInteraction = false;
 			}
 		}
 	}
@@ -407,7 +419,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Update()
 	{
-		if (!isShuffling)
+		if (enableInteraction)
 		{
 			if (finalTileAnimationStage == 0)
 			{
