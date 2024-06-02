@@ -17,8 +17,8 @@ TagManager:
   - 
   - 
   - BackgroundCamera
-  - 
-  - 
+  - PuzzleTile
+  - PuzzleBoardSlot
   - 
   - 
   - 

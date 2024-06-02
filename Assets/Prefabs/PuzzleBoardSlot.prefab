@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4535743185537208128}
   - component: {fileID: 6120058820026587178}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Outer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1187328778567544629}
   - component: {fileID: 4544912279240650622}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 2704035415503722946}
   - component: {fileID: 4792626429449922114}
   - component: {fileID: 294129752767829123}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: PuzzleBoardSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

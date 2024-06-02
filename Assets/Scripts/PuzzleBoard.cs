@@ -19,7 +19,12 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private float tileMovementSpeed = 0.2f;
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 
+	[Header("Layer Masks")]
+	[SerializeField] private LayerMask tileLayerMask;
+	[SerializeField] private LayerMask slotLayerMask;
+
 	private PuzzleBoardSlot[] puzzleBoardSlots;
+	private PuzzleBoardSlot finalTileSlot;
 	private Vector2Int tileSize;
 
 	private bool isShuffling = false;
@@ -251,7 +256,9 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void SetEmptyCornerTile()
 	{
-		puzzleBoardSlots[boardSize - 1].SetEmpty();
+		finalTileSlot = puzzleBoardSlots[boardSize - 1];
+		finalTileSlot.SetEmpty();
+		finalTileSlot.CorrectTile.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
 	}
 
 	private void InitializeBoard(Texture2D texture)
@@ -268,13 +275,13 @@ public class PuzzleBoard : MonoBehaviour
 		StartCoroutine(ShuffleBoard(0, 1000, 0.00f));
 	}
 
-	private void HandleInput()
+	private void HandleRegularTileMovement()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
 			Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-			RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+			RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 100.0f, slotLayerMask);
 			if (hit.collider != null)
 			{
 				var slot = hit.collider.GetComponentInParent<PuzzleBoardSlot>();
@@ -285,6 +292,24 @@ public class PuzzleBoard : MonoBehaviour
 					{
 						StartCoroutine(MoveTileBetweenSlots(slot, adjacentEmptySlot, tileMovementSpeed, true));
 					}
+				}
+			}
+		}
+	}
+
+	private void HandleFinalTileMovement()
+	{
+		if (Input.GetMouseButtonDown(0))
+		{
+			Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+			RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 100.0f, tileLayerMask);
+			if (hit.collider != null)
+			{
+				var tile = hit.collider.GetComponent<PuzzleTile>();
+				if (tile == finalTileSlot.CorrectTile)
+				{
+					Debug.Log("Clicked on the final tile!");
 				}
 			}
 		}
@@ -303,9 +328,25 @@ public class PuzzleBoard : MonoBehaviour
 		return true;
 	}
 
-	private void FinishGame()
+	private bool LerpFinalTile(bool completedPuzzle)
 	{
-		GetEmptySlot()?.InsertCorrectTile();
+		var finalTile = finalTileSlot.CorrectTile;
+
+		Vector3 finalTileTargetPos = completedPuzzle ? transform.position + (Vector3.right * boardSize) - (Vector3.right * 0.5f) : finalTileSlot.transform.position;
+		finalTile.transform.position = Vector3.Lerp(finalTile.transform.position, finalTileTargetPos, Time.deltaTime * 3.0f);
+
+		Quaternion finalTileTargetRot = completedPuzzle ? Quaternion.Euler(0f, 0f, -45.0f) : Quaternion.identity;
+		finalTile.transform.rotation = Quaternion.Lerp(finalTile.transform.rotation, finalTileTargetRot, Time.deltaTime * 5.0f);
+
+		float distanceToTargetPos = Vector3.Distance(finalTile.transform.position, finalTileTargetPos);
+		float distanceToTargetRot = Quaternion.Angle(finalTile.transform.rotation, finalTileTargetRot);
+
+		bool closeToTargetPos = distanceToTargetPos < 0.01f;
+		bool closeToTargetRot = distanceToTargetRot < 0.01f;
+
+		finalTile.gameObject.SetActive(completedPuzzle || !closeToTargetPos || !closeToTargetRot);
+
+		return closeToTargetPos && closeToTargetRot;
 	}
 
 	private void Start()
@@ -317,10 +358,14 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		if (!isShuffling)
 		{
-			HandleInput();
-			if (CheckForCompletion())
+			HandleRegularTileMovement();
+
+			bool completedPuzzle = CheckForCompletion();
+			bool finalTileIsStationary = LerpFinalTile(completedPuzzle);
+
+			if (completedPuzzle && finalTileIsStationary)
 			{
-				FinishGame();
+				HandleFinalTileMovement();
 			}
 		}
 	}
