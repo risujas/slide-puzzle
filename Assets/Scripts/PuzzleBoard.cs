@@ -30,6 +30,9 @@ public class PuzzleBoard : MonoBehaviour
 	private bool isShuffling = false;
 	private bool isMovingTiles = false;
 
+	private bool puzzleIsCompleted = false;
+	private bool triggeredFinalTile = false;
+
 	private void CenterBoardOnWorldOrigin()
 	{
 		Vector3 pos = Vector3.zero;
@@ -258,6 +261,8 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		finalTileSlot = puzzleBoardSlots[boardSize - 1];
 		finalTileSlot.SetEmpty();
+
+		finalTileSlot.CorrectTile.gameObject.SetActive(true);
 		finalTileSlot.CorrectTile.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
 	}
 
@@ -275,7 +280,7 @@ public class PuzzleBoard : MonoBehaviour
 		StartCoroutine(ShuffleBoard(0, 1000, 0.00f));
 	}
 
-	private void HandleRegularTileMovement()
+	private void HandleRegularTileInput()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -297,7 +302,7 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
-	private void HandleFinalTileMovement()
+	private void HandleFinalTileInput()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -309,44 +314,45 @@ public class PuzzleBoard : MonoBehaviour
 				var tile = hit.collider.GetComponent<PuzzleTile>();
 				if (tile == finalTileSlot.CorrectTile)
 				{
-					Debug.Log("Clicked on the final tile!");
+					triggeredFinalTile = true;
 				}
 			}
 		}
 	}
 
-	private bool CheckForCompletion()
+	private void CheckForCompletion()
 	{
 		foreach (var s in puzzleBoardSlots)
 		{
 			if (!s.HasCorrectTile && !s.IsEmpty)
 			{
-				return false;
+				puzzleIsCompleted = false;
+				return;
 			}
 		}
 
-		return true;
+		puzzleIsCompleted = true;
 	}
 
-	private bool LerpFinalTile(bool completedPuzzle)
+	private void LerpFinalTile()
 	{
 		var finalTile = finalTileSlot.CorrectTile;
+		Vector3 finalTileTargetPos;
+		Quaternion finalTileTargetRot;
 
-		Vector3 finalTileTargetPos = completedPuzzle ? transform.position + (Vector3.right * boardSize) - (Vector3.right * 0.5f) : finalTileSlot.transform.position;
+		if (triggeredFinalTile)
+		{
+			finalTileTargetPos = transform.position + (Vector3.right * (boardSize + 0.5f));
+			finalTileTargetRot = Quaternion.identity;
+		}
+		else
+		{
+			finalTileTargetPos = puzzleIsCompleted ? transform.position + (Vector3.right * boardSize) - (Vector3.right * 0.5f) : finalTileSlot.transform.position;
+			finalTileTargetRot = puzzleIsCompleted ? Quaternion.Euler(0f, 0f, -45.0f) : Quaternion.identity;
+		}
+
 		finalTile.transform.position = Vector3.Lerp(finalTile.transform.position, finalTileTargetPos, Time.deltaTime * 3.0f);
-
-		Quaternion finalTileTargetRot = completedPuzzle ? Quaternion.Euler(0f, 0f, -45.0f) : Quaternion.identity;
 		finalTile.transform.rotation = Quaternion.Lerp(finalTile.transform.rotation, finalTileTargetRot, Time.deltaTime * 5.0f);
-
-		float distanceToTargetPos = Vector3.Distance(finalTile.transform.position, finalTileTargetPos);
-		float distanceToTargetRot = Quaternion.Angle(finalTile.transform.rotation, finalTileTargetRot);
-
-		bool closeToTargetPos = distanceToTargetPos < 0.01f;
-		bool closeToTargetRot = distanceToTargetRot < 0.01f;
-
-		finalTile.gameObject.SetActive(completedPuzzle || !closeToTargetPos || !closeToTargetRot);
-
-		return closeToTargetPos && closeToTargetRot;
 	}
 
 	private void Start()
@@ -358,15 +364,18 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		if (!isShuffling)
 		{
-			HandleRegularTileMovement();
-
-			bool completedPuzzle = CheckForCompletion();
-			bool finalTileIsStationary = LerpFinalTile(completedPuzzle);
-
-			if (completedPuzzle && finalTileIsStationary)
+			if (!triggeredFinalTile)
 			{
-				HandleFinalTileMovement();
+				HandleRegularTileInput();
+				CheckForCompletion();
+
+				if (puzzleIsCompleted)
+				{
+					HandleFinalTileInput();
+				}
 			}
+
+			LerpFinalTile();
 		}
 	}
 }
