@@ -17,7 +17,10 @@ public class PuzzleBoard : MonoBehaviour
 
 	[Header("Tile behaviour")]
 	[SerializeField] private float tileMovementSpeed = 0.2f;
+
+	[Header("Sounds")]
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
+	[SerializeField] private RandomSoundPlayer popSoundPlayer;
 
 	[Header("Layer Masks")]
 	[SerializeField] private LayerMask tileLayerMask;
@@ -31,6 +34,7 @@ public class PuzzleBoard : MonoBehaviour
 	private bool isMovingTiles = false;
 
 	private bool puzzleIsCompleted = false;
+	private bool puzzleWasCompletedThisFrame = false;
 
 	private int finalTileAnimationStage = 0;
 
@@ -324,6 +328,7 @@ public class PuzzleBoard : MonoBehaviour
 				if (tile == finalTileSlot.CorrectTile)
 				{
 					finalTileAnimationStage = 1;
+					tileMotionSoundPlayer.Play();
 				}
 			}
 		}
@@ -331,6 +336,8 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void CheckForCompletion()
 	{
+		bool wasAlreadyCompleted = puzzleIsCompleted;
+
 		foreach (var s in puzzleBoardSlots)
 		{
 			if (!s.HasCorrectTile && !s.IsEmpty)
@@ -341,32 +348,40 @@ public class PuzzleBoard : MonoBehaviour
 		}
 
 		puzzleIsCompleted = true;
+		puzzleWasCompletedThisFrame = !wasAlreadyCompleted && puzzleIsCompleted;
 	}
 
 	private void LerpFinalTile()
 	{
 		var finalTile = finalTileSlot.CorrectTile;
 		Vector3 finalTileTargetPos;
-		Quaternion finalTileTargetRot;
+		Quaternion finalTileTargetRot = Quaternion.identity;
+		float lerpSpeedModifier = 1.0f;
 
 		if (finalTileAnimationStage == 1)
 		{
 			finalTileTargetPos = finalTileStage1TargetPos;
-			finalTileTargetRot = Quaternion.identity;
 		}
 		else if (finalTileAnimationStage == 2)
 		{
 			finalTileTargetPos = finalTileSlot.transform.position;
-			finalTileTargetRot = Quaternion.identity;
+			lerpSpeedModifier = 3.0f;
 		}
 		else
 		{
-			finalTileTargetPos = puzzleIsCompleted ? transform.position + (Vector3.right * boardSize) - (Vector3.right * 0.5f) : finalTileSlot.transform.position;
-			finalTileTargetRot = puzzleIsCompleted ? Quaternion.Euler(0f, 0f, -45.0f) : Quaternion.identity;
+			if (puzzleIsCompleted)
+			{
+				finalTileTargetPos = transform.position + (Vector3.right * boardSize) - (Vector3.right * 0.5f);
+				finalTileTargetRot = Quaternion.Euler(0f, 0f, -45.0f);
+			}
+			else
+			{
+				finalTileTargetPos = finalTileSlot.transform.position;
+			}
 		}
 
-		finalTile.transform.position = Vector3.Lerp(finalTile.transform.position, finalTileTargetPos, Time.deltaTime * 4.0f);
-		finalTile.transform.rotation = Quaternion.Lerp(finalTile.transform.rotation, finalTileTargetRot, Time.deltaTime * 5.0f);
+		finalTile.transform.position = Vector3.Lerp(finalTile.transform.position, finalTileTargetPos, Time.deltaTime * 4.0f * lerpSpeedModifier);
+		finalTile.transform.rotation = Quaternion.Lerp(finalTile.transform.rotation, finalTileTargetRot, Time.deltaTime * 5.0f * lerpSpeedModifier);
 	}
 
 	private void HandleFinalTileStages()
@@ -380,6 +395,7 @@ public class PuzzleBoard : MonoBehaviour
 			{
 				finalTileAnimationStage = 2;
 				finalTile.GetComponent<SpriteRenderer>().sortingLayerName = "PuzzleBoardTiles";
+				tileMotionSoundPlayer.Play();
 			}
 		}
 	}
@@ -401,6 +417,11 @@ public class PuzzleBoard : MonoBehaviour
 				if (puzzleIsCompleted)
 				{
 					HandleFinalTileInput();
+
+					if (puzzleWasCompletedThisFrame)
+					{
+						popSoundPlayer.Play();
+					}
 				}
 			}
 			else
