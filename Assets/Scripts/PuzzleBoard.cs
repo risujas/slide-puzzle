@@ -32,14 +32,51 @@ public class PuzzleBoard : MonoBehaviour
 	private PuzzleBoardSlot finalTileSlot;
 	private Vector2Int tileSize;
 
-	private bool enableInteraction = false;
-	private bool isMovingTiles = false;
-
-	private bool puzzleIsCompleted = false;
-	private bool puzzleWasCompletedThisFrame = false;
+	private bool enableInteraction;
+	private bool isMovingTiles;
+	private bool puzzleIsCompleted;
+	private bool puzzleWasCompletedThisFrame;
 
 	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
+
+	private Texture2D currentGraphic;
+
+	public void InitializeNextPuzzle()
+	{
+		DestroyPuzzle();
+
+		List<Texture2D> availableGraphics = new List<Texture2D>();
+		foreach (var graphic in puzzleGraphics)
+		{
+			if (graphic != currentGraphic)
+			{
+				availableGraphics.Add(graphic);
+			}
+		}
+
+		currentGraphic = availableGraphics[Random.Range(0, availableGraphics.Count - 1)];
+		InitializeBoard(currentGraphic);
+
+		puzzleIsCompleted = false;
+		puzzleWasCompletedThisFrame = false;
+		enableInteraction = true;
+		finalTileAnimationStage = 0;
+	}
+
+	private void DestroyPuzzle()
+	{
+		if (puzzleBoardSlots == null)
+		{
+			return;
+		}
+
+		foreach (var slot in puzzleBoardSlots)
+		{
+			Destroy(slot.CorrectTile.gameObject);
+			Destroy(slot.gameObject);
+		}
+	}
 
 	private Vector3 finalTileStage1TargetPos
 	{
@@ -419,11 +456,13 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Start()
 	{
-		InitializeBoard(puzzleGraphics[0]);
+		InitializeNextPuzzle();
 	}
 
 	private void Update()
 	{
+		Random.InitState((int)Time.time);
+
 		if (enableInteraction)
 		{
 			if (finalTileAnimationStage == 0)

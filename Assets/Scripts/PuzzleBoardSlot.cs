@@ -13,7 +13,7 @@ public class PuzzleBoardSlot : MonoBehaviour
 		name = "PuzzleBoardSlot_" + gridCoordinates.x + "_" + gridCoordinates.y;
 
 		transform.parent = board.transform;
-		transform.position = (Vector3.right * gridCoordinates.x) + (Vector3.up * gridCoordinates.y);
+		transform.localPosition = (Vector3.right * gridCoordinates.x) + (Vector3.up * gridCoordinates.y);
 
 		CorrectTile = correctTile;
 		GridCoordinates = gridCoordinates;
