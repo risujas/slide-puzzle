@@ -41,19 +41,6 @@ public class PuzzleBoard : MonoBehaviour
 	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
 
-	private IEnumerator LerpToPosition(GameObject obj, Vector3 pos, float threshold, float speed)
-	{
-		float distance = Vector3.Distance(obj.transform.position, pos);
-		while (distance > threshold)
-		{
-			obj.transform.position = Vector3.Lerp(obj.transform.position, pos, Time.deltaTime * speed);
-
-			distance = Vector3.Distance(obj.transform.position, pos);
-			yield return null;
-		}
-		yield return null;
-	}
-
 	private Vector3 finalTileStage1TargetPos
 	{
 		get
@@ -423,7 +410,7 @@ public class PuzzleBoard : MonoBehaviour
 			{
 				bellSoundPlayer.Play();
 				enableInteraction = false;
-				StartCoroutine(LerpToPosition(finalTile.gameObject, finalTileSlot.transform.position, 0.001f, 10.0f));
+				StartCoroutine(LerpToPosition.Lerp(finalTile.gameObject, finalTileSlot.transform.position, 0.001f, 10.0f));
 			}
 		}
 	}
