@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class PuzzleBoard : MonoBehaviour
 {
-	[SerializeField] private GameObject puzzleSlotPrefab;
-	[SerializeField] private GameObject puzzleTilePrefab;
-
-	[SerializeField] private GameObject puzzleBoardBackground;
+	[SerializeField] private PuzzleBoardSlot puzzleSlotPrefab;
+	[SerializeField] private PuzzleBoardTile puzzleTilePrefab;
+	[SerializeField] private PuzzleBoardBackground puzzleBoardBackgroundPrefab;
 
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 	[SerializeField] private RandomSoundPlayer popSoundPlayer;
@@ -16,12 +15,11 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
 
-	private const float backgroundBorderThickness = 0.2f;
 	private const float tileMovementSpeed = 0.2f;
 
-	private int boardSize;
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
+	private PuzzleBoardBackground background;
 	private Vector2Int tileSize;
 
 	private bool enableInteraction;
@@ -31,6 +29,8 @@ public class PuzzleBoard : MonoBehaviour
 
 	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
+
+	public int boardSize { get; private set; }
 
 	public Texture2D currentGraphic { get; private set; }
 
@@ -50,7 +50,9 @@ public class PuzzleBoard : MonoBehaviour
 		CreateSlotsForTiles(tiles);
 
 		CenterBoardOnWorldOrigin();
-		SetBackgroundTransform();
+
+		background = Instantiate(puzzleBoardBackgroundPrefab, transform);
+		background.SetBackgroundTransform(this);
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
@@ -63,16 +65,6 @@ public class PuzzleBoard : MonoBehaviour
 		pos.x = -(boardSize / 2.0f) + 0.5f;
 		pos.y = -(boardSize / 2.0f) + 0.5f;
 		transform.position = pos;
-	}
-
-	private void SetBackgroundTransform()
-	{
-		Vector3 pos = transform.position;
-		pos.x -= 0.5f + (backgroundBorderThickness * 0.5f);
-		pos.y -= 0.5f + (backgroundBorderThickness * 0.5f);
-		puzzleBoardBackground.transform.position = pos;
-
-		puzzleBoardBackground.transform.localScale = Vector3.one * (boardSize + backgroundBorderThickness);
 	}
 
 	private IEnumerator MoveTileBetweenSlots(PuzzleBoardSlot originSlot, PuzzleBoardSlot destinationSlot, float duration, bool playSound)
