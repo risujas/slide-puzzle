@@ -8,9 +8,6 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private GameObject puzzleTilePrefab;
 
 	[SerializeField] private GameObject puzzleBoardBackground;
-	[SerializeField] private float backgroundBorderThickness = 0.2f;
-
-	[SerializeField] private float tileMovementSpeed = 0.2f;
 
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 	[SerializeField] private RandomSoundPlayer popSoundPlayer;
@@ -18,6 +15,9 @@ public class PuzzleBoard : MonoBehaviour
 
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
+
+	private const float backgroundBorderThickness = 0.2f;
+	private const float tileMovementSpeed = 0.2f;
 
 	private int boardSize;
 	private PuzzleBoardSlot[] puzzleBoardSlots;
