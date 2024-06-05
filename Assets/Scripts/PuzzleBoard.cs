@@ -178,7 +178,7 @@ public class PuzzleBoard : MonoBehaviour
 		return null;
 	}
 
-	private void CreateSlotsForTiles(PuzzleTile[] unshuffledTiles)
+	private void CreateSlotsForTiles(PuzzleBoardTile[] unshuffledTiles)
 	{
 		puzzleBoardSlots = new PuzzleBoardSlot[boardSize * boardSize];
 
@@ -193,18 +193,18 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
-	private PuzzleTile[] CreateTilesFromTexture(Texture2D source)
+	private PuzzleBoardTile[] CreateTilesFromTexture(Texture2D source)
 	{
 		tileSize.x = source.width / boardSize;
 		tileSize.y = source.height / boardSize;
 
-		var puzzleTiles = new PuzzleTile[boardSize * boardSize];
+		var puzzleTiles = new PuzzleBoardTile[boardSize * boardSize];
 
 		for (int y = 0; y < boardSize; y++)
 		{
 			for (int x = 0; x < boardSize; x++)
 			{
-				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleTile>();
+				var tile = Instantiate(puzzleTilePrefab).GetComponent<PuzzleBoardTile>();
 				tile.Initialize(source, new Vector2Int(x, y), tileSize, boardSize);
 
 				puzzleTiles[x + y * boardSize] = tile;
@@ -264,7 +264,7 @@ public class PuzzleBoard : MonoBehaviour
 	}
 
 
-	private void InsertTilesToSlots(PuzzleTile[] tiles)
+	private void InsertTilesToSlots(PuzzleBoardTile[] tiles)
 	{
 		for (int y = 0; y < boardSize; y++)
 		{
@@ -316,7 +316,7 @@ public class PuzzleBoard : MonoBehaviour
 			RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 100.0f, tileLayerMask);
 			if (hit.collider != null)
 			{
-				var tile = hit.collider.GetComponent<PuzzleTile>();
+				var tile = hit.collider.GetComponent<PuzzleBoardTile>();
 				if (tile == finalTileSlot.CorrectTile)
 				{
 					finalTileAnimationStage = 1;

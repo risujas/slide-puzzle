@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class PuzzleBoardSlot : MonoBehaviour
 {
-	public PuzzleTile CorrectTile { get; private set; }
-	public PuzzleTile InsertedTile { get; private set; }
+	public PuzzleBoardTile CorrectTile { get; private set; }
+	public PuzzleBoardTile InsertedTile { get; private set; }
 	public Vector2Int GridCoordinates { get; private set; }
 	public bool IsEmpty => InsertedTile == null;
 	public bool HasCorrectTile => InsertedTile == CorrectTile;
 
-	public void Initialize(PuzzleBoard board, PuzzleTile correctTile, Vector2Int gridCoordinates)
+	public void Initialize(PuzzleBoard board, PuzzleBoardTile correctTile, Vector2Int gridCoordinates)
 	{
 		name = "PuzzleBoardSlot_" + gridCoordinates.x + "_" + gridCoordinates.y;
 
@@ -19,7 +19,7 @@ public class PuzzleBoardSlot : MonoBehaviour
 		GridCoordinates = gridCoordinates;
 	}
 
-	public void InsertTile(PuzzleTile tile)
+	public void InsertTile(PuzzleBoardTile tile)
 	{
 		InsertedTile = tile;
 		InsertedTile.gameObject.SetActive(true);

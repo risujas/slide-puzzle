@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PuzzleTile : MonoBehaviour
+public class PuzzleBoardTile : MonoBehaviour
 {
 	[SerializeField] private TextMeshProUGUI tileNumberText;
 

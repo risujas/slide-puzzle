@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: -7499654160242435326}
   - component: {fileID: 1897505424673050984}
   m_Layer: 11
-  m_Name: PuzzleTile
+  m_Name: PuzzleBoardTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
