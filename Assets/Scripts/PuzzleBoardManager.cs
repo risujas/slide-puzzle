@@ -24,6 +24,8 @@ public class PuzzleBoardManager : MonoBehaviour
 		puzzleBoard.InitializeBoard(nextGraphic, boardSize);
 
 		environmentBackground.SetBackground(nextGraphic);
+
+		SetCameraSize(1.0f);
 	}
 
 	private void LoadTextures()
@@ -44,6 +46,11 @@ public class PuzzleBoardManager : MonoBehaviour
 		}
 
 		return availableGraphics[Random.Range(0, availableGraphics.Count)];
+	}
+
+	private void SetCameraSize(float boardMargin)
+	{
+		Camera.main.orthographicSize = (boardSize / 2.0f) + boardMargin;
 	}
 
 	private void Start()

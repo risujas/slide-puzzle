@@ -50,7 +50,6 @@ public class PuzzleBoard : MonoBehaviour
 		CreateSlotsForTiles(tiles);
 
 		CenterBoardOnWorldOrigin();
-		SetCameraSize(1.0f);
 		SetBackgroundTransform();
 
 		InsertTilesToSlots(tiles);
@@ -64,11 +63,6 @@ public class PuzzleBoard : MonoBehaviour
 		pos.x = -(boardSize / 2.0f) + 0.5f;
 		pos.y = -(boardSize / 2.0f) + 0.5f;
 		transform.position = pos;
-	}
-
-	private void SetCameraSize(float boardMargin)
-	{
-		Camera.main.orthographicSize = (boardSize / 2.0f) + boardMargin;
 	}
 
 	private void SetBackgroundTransform()
