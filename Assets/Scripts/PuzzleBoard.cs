@@ -1,33 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PuzzleBoard : MonoBehaviour
 {
-	[Header("Prefabs")]
 	[SerializeField] private GameObject puzzleSlotPrefab;
 	[SerializeField] private GameObject puzzleTilePrefab;
 
-	[Header("Board properties")]
 	[SerializeField] private GameObject puzzleBoardBackground;
 	[SerializeField] private float backgroundBorderThickness = 0.2f;
-	[SerializeField] private int boardSize = 3;
 
-	[Header("Tile behaviour")]
 	[SerializeField] private float tileMovementSpeed = 0.2f;
 
-	[Header("Sounds")]
 	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
 	[SerializeField] private RandomSoundPlayer popSoundPlayer;
 	[SerializeField] private RandomSoundPlayer bellSoundPlayer;
 
-	[Header("Layer Masks")]
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
 
-	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
+	private int boardSize;
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
 	private Vector2Int tileSize;
@@ -42,54 +34,28 @@ public class PuzzleBoard : MonoBehaviour
 
 	public Texture2D currentGraphic { get; private set; }
 
-	public void InitializeNextPuzzle()
-	{
-		DestroyPuzzle();
-
-		List<Texture2D> availableGraphics = new List<Texture2D>();
-		foreach (var graphic in puzzleGraphics)
-		{
-			if (graphic != currentGraphic)
-			{
-				availableGraphics.Add(graphic);
-			}
-		}
-
-		currentGraphic = availableGraphics[Random.Range(0, availableGraphics.Count)];
-		InitializeBoard(currentGraphic);
-
-		puzzleIsCompleted = false;
-		puzzleWasCompletedThisFrame = false;
-		enableInteraction = true;
-		finalTileAnimationStage = 0;
-	}
-
-	private void LoadTextures()
-	{
-		string folderPath = "Textures/PuzzleArt";
-		puzzleGraphics = Resources.LoadAll<Texture2D>(folderPath).ToList();
-	}
-
-	private void DestroyPuzzle()
-	{
-		if (puzzleBoardSlots == null)
-		{
-			return;
-		}
-
-		foreach (var slot in puzzleBoardSlots)
-		{
-			Destroy(slot.CorrectTile.gameObject);
-			Destroy(slot.gameObject);
-		}
-	}
-
 	private Vector3 finalTileStage1TargetPos
 	{
 		get
 		{
 			return transform.position + (Vector3.right * (boardSize + 0.5f));
 		}
+	}
+
+	public void InitializeBoard(Texture2D texture, int size)
+	{
+		boardSize = size;
+
+		var tiles = CreateTilesFromTexture(texture);
+		CreateSlotsForTiles(tiles);
+
+		CenterBoardOnWorldOrigin();
+		SetCameraSize(1.0f);
+		SetBackgroundTransform();
+
+		InsertTilesToSlots(tiles);
+		SetEmptyCornerTile();
+		StartCoroutine(ShuffleBoard(1000, 0.00f));
 	}
 
 	private void CenterBoardOnWorldOrigin()
@@ -325,20 +291,6 @@ public class PuzzleBoard : MonoBehaviour
 		finalTileSlot.CorrectTile.GetComponentInChildren<Canvas>().sortingLayerName = "Default";
 	}
 
-	private void InitializeBoard(Texture2D texture)
-	{
-		var tiles = CreateTilesFromTexture(texture);
-		CreateSlotsForTiles(tiles);
-
-		CenterBoardOnWorldOrigin();
-		SetCameraSize(1.0f);
-		SetBackgroundTransform();
-
-		InsertTilesToSlots(tiles);
-		SetEmptyCornerTile();
-		StartCoroutine(ShuffleBoard(1000, 0.00f));
-	}
-
 	private void HandleRegularTileInput()
 	{
 		if (Input.GetMouseButtonDown(0))
@@ -457,12 +409,6 @@ public class PuzzleBoard : MonoBehaviour
 				StartCoroutine(LerpToPosition.Lerp(finalTile.gameObject, finalTileSlot.transform.position, 0.001f, 10.0f));
 			}
 		}
-	}
-
-	private void Start()
-	{
-		LoadTextures();
-		InitializeNextPuzzle();
 	}
 
 	private void Update()

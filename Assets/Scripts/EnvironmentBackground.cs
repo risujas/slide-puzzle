@@ -6,36 +6,14 @@ public class EnvironmentBackground : MonoBehaviour
 {
 	[SerializeField] private GameObject background1;
 	[SerializeField] private GameObject background2;
-	[SerializeField] private PuzzleBoard puzzleBoard;
 
 	private Texture2D previousGraphic;
 	private bool useFirstBackground = true;
 	private List<Coroutine> activeCoroutines = new List<Coroutine>();
 
-	private IEnumerator LerpAlpha(float target, float time, SpriteRenderer renderer)
+	public void SetBackground(Texture2D nextGraphic)
 	{
-		float startAlpha = renderer.color.a;
-		float elapsedTime = 0f;
-
-		while (elapsedTime < time)
-		{
-			float alpha = Mathf.Lerp(startAlpha, target, elapsedTime / time);
-			Color newColor = renderer.color;
-			newColor.a = alpha;
-			renderer.color = newColor;
-
-			elapsedTime += Time.deltaTime;
-			yield return null;
-		}
-
-		Color finalColor = renderer.color;
-		finalColor.a = target;
-		renderer.color = finalColor;
-	}
-
-	private void SetBackground()
-	{
-		Sprite newSprite = Sprite.Create(puzzleBoard.currentGraphic, new Rect(0.0f, 0.0f, puzzleBoard.currentGraphic.width, puzzleBoard.currentGraphic.height), new Vector2(0.5f, 0.5f), 100.0f);
+		Sprite newSprite = Sprite.Create(nextGraphic, new Rect(0.0f, 0.0f, nextGraphic.width, nextGraphic.height), new Vector2(0.5f, 0.5f), 100.0f);
 
 		foreach (var c in activeCoroutines)
 		{
@@ -57,14 +35,27 @@ public class EnvironmentBackground : MonoBehaviour
 		}
 
 		useFirstBackground = !useFirstBackground;
-		previousGraphic = puzzleBoard.currentGraphic;
+		previousGraphic = nextGraphic;
 	}
 
-	private void Update()
+	private IEnumerator LerpAlpha(float target, float time, SpriteRenderer renderer)
 	{
-		if (puzzleBoard.currentGraphic != previousGraphic)
+		float startAlpha = renderer.color.a;
+		float elapsedTime = 0f;
+
+		while (elapsedTime < time)
 		{
-			SetBackground();
+			float alpha = Mathf.Lerp(startAlpha, target, elapsedTime / time);
+			Color newColor = renderer.color;
+			newColor.a = alpha;
+			renderer.color = newColor;
+
+			elapsedTime += Time.deltaTime;
+			yield return null;
 		}
+
+		Color finalColor = renderer.color;
+		finalColor.a = target;
+		renderer.color = finalColor;
 	}
 }
