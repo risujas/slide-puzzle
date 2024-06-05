@@ -55,6 +55,7 @@ public class PuzzleBoard : MonoBehaviour
 			}
 		}
 
+		Random.InitState((int)(Time.time * 1000.0f));
 		currentGraphic = availableGraphics[Random.Range(0, availableGraphics.Count - 1)];
 		InitializeBoard(currentGraphic);
 
@@ -331,7 +332,7 @@ public class PuzzleBoard : MonoBehaviour
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
-		StartCoroutine(ShuffleBoard(0, 1000, 0.00f));
+		StartCoroutine(ShuffleBoard((int)(Time.time * 1000.0f), 1000, 0.00f));
 	}
 
 	private void HandleRegularTileInput()
