@@ -55,7 +55,7 @@ public class PuzzleBoard : MonoBehaviour
 			}
 		}
 
-		currentGraphic = availableGraphics[Random.Range(0, availableGraphics.Count - 1)];
+		currentGraphic = availableGraphics[Random.Range(0, availableGraphics.Count)];
 		InitializeBoard(currentGraphic);
 
 		puzzleIsCompleted = false;

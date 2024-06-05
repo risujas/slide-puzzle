@@ -31,7 +31,7 @@ public class RandomSoundPlayer : MonoBehaviour
 			}
 			clips.Add(c);
 		}
-		return clips[Random.Range(0, clips.Count - 1)];
+		return clips[Random.Range(0, clips.Count)];
 	}
 
 	private void Awake()
