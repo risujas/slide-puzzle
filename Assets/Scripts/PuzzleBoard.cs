@@ -27,6 +27,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
 
+	private Texture2D currentGraphic;
 	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
@@ -39,8 +40,6 @@ public class PuzzleBoard : MonoBehaviour
 
 	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
-
-	private Texture2D currentGraphic;
 
 	public void InitializeNextPuzzle()
 	{
