@@ -27,7 +27,6 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
 
-	private Texture2D currentGraphic;
 	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
@@ -40,6 +39,8 @@ public class PuzzleBoard : MonoBehaviour
 
 	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
+
+	public Texture2D currentGraphic { get; private set; }
 
 	public void InitializeNextPuzzle()
 	{
@@ -54,7 +55,6 @@ public class PuzzleBoard : MonoBehaviour
 			}
 		}
 
-		Random.InitState((int)(Time.time * 1000.0f));
 		currentGraphic = availableGraphics[Random.Range(0, availableGraphics.Count - 1)];
 		InitializeBoard(currentGraphic);
 
@@ -66,7 +66,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void LoadTextures()
 	{
-		string folderPath = "Textures";
+		string folderPath = "Textures/PuzzleArt";
 		puzzleGraphics = Resources.LoadAll<Texture2D>(folderPath).ToList();
 	}
 
@@ -254,10 +254,9 @@ public class PuzzleBoard : MonoBehaviour
 		return puzzleTiles;
 	}
 
-	private IEnumerator ShuffleBoard(int seed, int numMoves, float moveInterval)
+	private IEnumerator ShuffleBoard(int numMoves, float moveInterval)
 	{
 		enableInteraction = false;
-		Random.InitState(seed);
 		PuzzleBoardSlot previousEmptySlot = null;
 
 		for (int i = 0; i < numMoves; i++)
@@ -337,7 +336,7 @@ public class PuzzleBoard : MonoBehaviour
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
-		StartCoroutine(ShuffleBoard((int)(Time.time * 1000.0f), 1000, 0.00f));
+		StartCoroutine(ShuffleBoard(1000, 0.00f));
 	}
 
 	private void HandleRegularTileInput()
@@ -468,8 +467,6 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Update()
 	{
-		Random.InitState((int)Time.time);
-
 		if (enableInteraction)
 		{
 			if (finalTileAnimationStage == 0)
