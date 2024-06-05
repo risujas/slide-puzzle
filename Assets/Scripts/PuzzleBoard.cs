@@ -42,7 +42,7 @@ public class PuzzleBoard : MonoBehaviour
 		}
 	}
 
-	public void InitializeBoard(Texture2D texture, int size)
+	public void InitializeBoard(Texture2D texture, int size, int numMoves)
 	{
 		boardSize = size;
 
@@ -54,7 +54,7 @@ public class PuzzleBoard : MonoBehaviour
 
 		InsertTilesToSlots(tiles);
 		SetEmptyCornerTile();
-		StartCoroutine(ShuffleBoard(1000, 0.00f));
+		StartCoroutine(ShuffleBoard(numMoves, 0.00f));
 	}
 
 	private void CenterBoardOnWorldOrigin()

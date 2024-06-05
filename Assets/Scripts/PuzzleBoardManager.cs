@@ -8,6 +8,7 @@ public class PuzzleBoardManager : MonoBehaviour
 	[SerializeField] private EnvironmentBackground environmentBackground;
 	[SerializeField] private int boardSize = 3;
 
+	private const string puzzleArtFolder = "Textures/PuzzleArt";
 	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	private PuzzleBoard puzzleBoard;
 
@@ -20,8 +21,11 @@ public class PuzzleBoardManager : MonoBehaviour
 			Destroy(puzzleBoard.gameObject);
 		}
 
+
 		puzzleBoard = Instantiate(puzzleBoardPrefab, transform).GetComponent<PuzzleBoard>();
-		puzzleBoard.InitializeBoard(nextGraphic, boardSize);
+
+		int numMoves = (int)Mathf.Pow(boardSize, 4.0f);
+		puzzleBoard.InitializeBoard(nextGraphic, boardSize, numMoves);
 
 		environmentBackground.SetBackground(nextGraphic);
 
@@ -30,8 +34,7 @@ public class PuzzleBoardManager : MonoBehaviour
 
 	private void LoadTextures()
 	{
-		string folderPath = "Textures/PuzzleArt";
-		puzzleGraphics = Resources.LoadAll<Texture2D>(folderPath).ToList();
+		puzzleGraphics = Resources.LoadAll<Texture2D>(puzzleArtFolder).ToList();
 	}
 
 	private Texture2D GetRandomTexture()
