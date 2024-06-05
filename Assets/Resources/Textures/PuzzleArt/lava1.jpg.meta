@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3c98f4d1a6fe01e44a2f89d744ff632a
+guid: 2825a3e9f01ca6d41bf1f80b8f03f969
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8376519659589405040
-    second: moonlit_night_0
+      213: -4789901171530298653
+    second: lava1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: moonlit_night_0
+      name: lava1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 07907ebef306f3470800000000000000
-      internalID: 8376519659589405040
+      spriteID: 3ea85b1334ad68db0800000000000000
+      internalID: -4789901171530298653
       vertices: []
       indices: 
       edges: []

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e8cac95d8031ead4bae2ae0417273b5b
+guid: 9545cfa3d5c9f2c4d8dd6fb30e593d86
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3833289624320100393
-    second: prosciutto_rucola_0
+      213: -6329615864849440780
+    second: mountains2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: prosciutto_rucola_0
+      name: mountains2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9284aca8a94923530800000000000000
-      internalID: 3833289624320100393
+      spriteID: 4ffd8fa18efa828a0800000000000000
+      internalID: -6329615864849440780
       vertices: []
       indices: 
       edges: []

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ed6d4ad8e40073542966783aefcd364d
+guid: ed1c0aa92834489409e1a7c6fb5d39ef
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8326988188458692621
-    second: herbal_aquarium_0
+      213: -6287625352991282030
+    second: autumn1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: herbal_aquarium_0
+      name: autumn1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d0034fd93a76f8370800000000000000
-      internalID: 8326988188458692621
+      spriteID: 29ce6320e0eddb8a0800000000000000
+      internalID: -6287625352991282030
       vertices: []
       indices: 
       edges: []

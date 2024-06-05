@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2f24cad359bf72248a5aed612efe1a00
+guid: 0486b36525ce513448803d4ede874aa4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7039347045978003466
-    second: chicago_deep_dish_0
+      213: 3528723890981641967
+    second: jungle2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chicago_deep_dish_0
+      name: jungle2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6f729c168273f4e90800000000000000
-      internalID: -7039347045978003466
+      spriteID: fee1560deab88f030800000000000000
+      internalID: 3528723890981641967
       vertices: []
       indices: 
       edges: []

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 16bad5cf0cfd0b44bb078d52e514ae34
+guid: 87ac82a8e2357fa45a035440cb58fab0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2642457155618807172
-    second: mint_and_cinnamon_0
+      213: 3831638297713041630
+    second: river2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mint_and_cinnamon_0
+      name: river2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 48d19de58c4eba420800000000000000
-      internalID: 2642457155618807172
+      spriteID: ed0e7fa1bb6bc2530800000000000000
+      internalID: 3831638297713041630
       vertices: []
       indices: 
       edges: []

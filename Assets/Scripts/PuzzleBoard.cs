@@ -11,7 +11,6 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private GameObject puzzleTilePrefab;
 
 	[Header("Board properties")]
-	[SerializeField] private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	[SerializeField] private GameObject puzzleBoardBackground;
 	[SerializeField] private float backgroundBorderThickness = 0.2f;
 	[SerializeField] private int boardSize = 3;
@@ -28,6 +27,7 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
 
+	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
 	private Vector2Int tileSize;
@@ -63,6 +63,12 @@ public class PuzzleBoard : MonoBehaviour
 		puzzleWasCompletedThisFrame = false;
 		enableInteraction = true;
 		finalTileAnimationStage = 0;
+	}
+
+	private void LoadTextures()
+	{
+		string folderPath = "Textures";
+		puzzleGraphics = Resources.LoadAll<Texture2D>(folderPath).ToList();
 	}
 
 	private void DestroyPuzzle()
@@ -457,6 +463,7 @@ public class PuzzleBoard : MonoBehaviour
 
 	private void Start()
 	{
+		LoadTextures();
 		InitializeNextPuzzle();
 	}
 

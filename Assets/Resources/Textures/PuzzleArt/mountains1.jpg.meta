@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f05b2af187d6d04428d2e3bcf6a8a2d3
+guid: 76ffbd53b57460c4480fd3687c072595
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6627702058582677599
-    second: _d667f247-fc10-4a5d-9a3b-69a3ee1c136e_0
+      213: 7628643057909651980
+    second: mountains1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: _d667f247-fc10-4a5d-9a3b-69a3ee1c136e_0
+      name: mountains1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5812fe38e35afb50800000000000000
-      internalID: 6627702058582677599
+      spriteID: c0a54f061726ed960800000000000000
+      internalID: 7628643057909651980
       vertices: []
       indices: 
       edges: []
@@ -145,8 +145,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      _d667f247-fc10-4a5d-9a3b-69a3ee1c136e_0: 6627702058582677599
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
