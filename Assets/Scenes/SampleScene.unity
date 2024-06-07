@@ -665,7 +665,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 944430564}
         m_TargetAssemblyTypeName: PuzzleBoardManager, Assembly-CSharp
-        m_MethodName: CreatePuzzleBoard
+        m_MethodName: CreatePuzzleWithRandomGraphic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puzzleBoardPrefab: {fileID: 1858942302852464439, guid: 62bf75daf39a5954b959c03ecb312cad, type: 3}
   environmentBackground: {fileID: 1591850923}
-  boardSize: 3
+  boardSize: 2
 --- !u!1 &964300401
 GameObject:
   m_ObjectHideFlags: 0
