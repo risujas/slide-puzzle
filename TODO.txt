@@ -10,6 +10,10 @@ Add a drop shadow / frame effect to the tiles
 
 Add an animation / let the user drag in the final piece when the rest of the puzzle is correct
 
+fade numbers away after completion
+
+
+
 Add UI for:
 	Selecting the puzzle graphic < o o o x o >
 	Resetting the puzzle
