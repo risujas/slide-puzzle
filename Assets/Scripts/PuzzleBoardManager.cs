@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PuzzleBoardManager : MonoBehaviour
@@ -12,22 +13,27 @@ public class PuzzleBoardManager : MonoBehaviour
 	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	private PuzzleBoard puzzleBoard;
 
-	public void CreatePuzzleBoard()
-	{
-		Texture2D nextGraphic = GetRandomTexture();
+	public IList<Texture2D> PuzzleGraphics => puzzleGraphics.AsReadOnlyList();
 
+	public void CreatePuzzleWithRandomGraphic()
+	{
+		Texture2D randomGraphic = GetRandomTexture();
+		CreatePuzzleWithGraphic(randomGraphic);
+	}
+
+	public void CreatePuzzleWithGraphic(Texture2D graphic)
+	{
 		if (puzzleBoard != null)
 		{
 			Destroy(puzzleBoard.gameObject);
 		}
 
-
 		puzzleBoard = Instantiate(puzzleBoardPrefab, transform).GetComponent<PuzzleBoard>();
 
 		int numMoves = (int)Mathf.Pow(boardSize, 4.0f);
-		puzzleBoard.InitializeBoard(nextGraphic, boardSize, numMoves);
+		puzzleBoard.InitializeBoard(graphic, boardSize, numMoves);
 
-		environmentBackground.SetBackground(nextGraphic);
+		environmentBackground.SetBackground(graphic);
 
 		SetCameraSize(1.0f);
 	}
@@ -59,6 +65,6 @@ public class PuzzleBoardManager : MonoBehaviour
 	private void Start()
 	{
 		LoadTextures();
-		CreatePuzzleBoard();
+		CreatePuzzleWithRandomGraphic();
 	}
 }
