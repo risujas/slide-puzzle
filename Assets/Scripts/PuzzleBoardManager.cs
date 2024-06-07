@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PuzzleBoardManager : MonoBehaviour
@@ -11,6 +12,8 @@ public class PuzzleBoardManager : MonoBehaviour
 	private const string puzzleArtFolder = "Textures/PuzzleArt";
 	private List<Texture2D> puzzleGraphics = new List<Texture2D>();
 	private PuzzleBoard puzzleBoard;
+
+	public IList<Texture2D> PuzzleGraphics => puzzleGraphics.AsReadOnlyList();
 
 	public void CreatePuzzleBoard()
 	{
