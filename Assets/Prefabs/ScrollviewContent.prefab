@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1032572249027112586}
   - component: {fileID: 792948006919702433}
   - component: {fileID: 8665832107374531167}
+  - component: {fileID: 5540137518927280656}
+  - component: {fileID: 6385249972303739705}
   m_Layer: 5
   m_Name: ScrollviewContent
   m_TagString: Untagged
@@ -75,3 +77,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5540137518927280656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029287313963799257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14785e9c1fc42da409d85e2e83a7de02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6385249972303739705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029287313963799257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f34da70148a964297cbf8b6fcbae25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
