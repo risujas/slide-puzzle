@@ -42,3 +42,5 @@ trim audio file starts
 bug: if switching to settings while tile numbers are fading, they will not finish fading. fix: set them to 0.0f alpha when you switch to settings
 
 add a button to toggle between random/ordered playthrough of the puzzles
+
+implement exit button
