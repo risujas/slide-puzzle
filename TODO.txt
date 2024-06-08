@@ -21,5 +21,3 @@ make board constant size for all board sizes
 make audio players an independent object so they are not destroyed upon board destruction
 
 make the final piece wiggle to get the user's attention
-
-make sure that puzzle graphics and victory jingles can't repeat when supposed to be random
