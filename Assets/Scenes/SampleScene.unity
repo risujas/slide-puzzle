@@ -3056,15 +3056,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1054701654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 360f943a0d2f17f44b3f837b864a1eef, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b07ab6eb1bebd4bbf373ba93f6f061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  activeSprite: {fileID: 0}
-  mutedSprite: {fileID: 0}
-  image: {fileID: 0}
-  button: {fileID: 0}
-  scrollbar: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: b1a1e2e13f74ecf4d9c3b3cc1a0848fa, type: 2}
+  audioMixerParameter: SfxVolume
+  activeSprite: {fileID: 21300000, guid: e153e7320d1c3b247b8dd9913128265a, type: 3}
+  mutedSprite: {fileID: 21300000, guid: b63baeb07a1575b458e8570f910dbc41, type: 3}
+  image: {fileID: 2119931169}
+  button: {fileID: 1182876152}
+  scrollbar: {fileID: 1744270213}
 --- !u!1 &1080329916
 GameObject:
   m_ObjectHideFlags: 0
@@ -3752,8 +3753,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MusicControls, Assembly-CSharp
+      - m_Target: {fileID: 1054701659}
+        m_TargetAssemblyTypeName: AudioControls, Assembly-CSharp
         m_MethodName: ToggleMute
         m_Mode: 1
         m_Arguments:
@@ -4362,7 +4363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b07ab6eb1bebd4bbf373ba93f6f061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 487154540}
+  audioMixer: {fileID: 24100000, guid: b1a1e2e13f74ecf4d9c3b3cc1a0848fa, type: 2}
+  audioMixerParameter: MusicVolume
   activeSprite: {fileID: 21300000, guid: cfeb52c1158468445be82e5c877e4f1a, type: 3}
   mutedSprite: {fileID: 21300000, guid: a631e872ceb8c434ead7ead22b772b24, type: 3}
   image: {fileID: 289733117}
@@ -4914,8 +4916,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MusicControls, Assembly-CSharp
+      - m_Target: {fileID: 1054701659}
+        m_TargetAssemblyTypeName: AudioControls, Assembly-CSharp
         m_MethodName: Unmute
         m_Mode: 1
         m_Arguments:
