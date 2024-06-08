@@ -32,3 +32,7 @@ maybe pair each graphic with a preset noise clip, wind for outdoors, booming noi
 maybe move the size / command bar to the right side and make it bigger, easier for mobile use
 
 add mobile touch controls and make sure the UI scales properly with any screen size
+
+allow changing the board background (wooden floor)
+
+allow adjusting the opacity of the number plates on the tiles
