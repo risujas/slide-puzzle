@@ -28,3 +28,7 @@ maybe colour it based on the colour of the current graphic
 
 add background noise, wind, etc
 maybe pair each graphic with a preset noise clip, wind for outdoors, booming noise for underwater, etc
+
+maybe move the size / command bar to the right side and make it bigger, easier for mobile use
+
+add mobile touch controls and make sure the UI scales properly with any screen size
