@@ -2,8 +2,6 @@ Before shuffling, depending on the difficulty, make certain tiles untouchable so
 
 Add background music
 
-Allow moving the empty slot with keyboard
-
 Add a drop shadow / frame effect to the tiles
 
 
