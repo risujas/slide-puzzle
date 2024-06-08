@@ -46,10 +46,7 @@ public class PuzzleBoardManager : MonoBehaviour
 	public void RecreatePuzzleWithCurrentGraphic()
 	{
 		// TODO check if redundant
-		Texture2D currentGraphic = new Texture2D(puzzleBoard.currentGraphic.width, puzzleBoard.currentGraphic.height, puzzleBoard.currentGraphic.format, false);
-		currentGraphic.LoadRawTextureData(puzzleBoard.currentGraphic.GetRawTextureData());
-		currentGraphic.Apply();
-
+		Texture2D currentGraphic = puzzleBoard.currentGraphic;
 		CreatePuzzleWithGraphic(currentGraphic);
 	}
 
