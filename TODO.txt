@@ -6,16 +6,25 @@ Add a drop shadow / frame effect to the tiles
 
 
 Add UI for:
-	Selecting the puzzle graphic < o o o x o >
-	Resetting the puzzle
+	Resetting the puzzle to the original config ( need seed)
 	Toggling music / sound effects
 	Auto-solve: Find the correct solution
 	Hint: find the next optimal move
 	Music jukebox: next song, volume, etc
 	Title graphic
+	message "Puzzle completed! Time: 203s - Moves: 39"
+
+make the random graphic selector prefer graphics that haven't been used yet (need to keep a list of used ones)
+
 	
 make board constant size for all board sizes
 
 make audio players an independent object so they are not destroyed upon board destruction
 
 make the final piece wiggle to get the user's attention
+
+add bokeh snow to the background
+maybe colour it based on the colour of the current graphic
+
+add background noise, wind, etc
+maybe pair each graphic with a preset noise clip, wind for outdoors, booming noise for underwater, etc
