@@ -1,17 +1,10 @@
 Before shuffling, depending on the difficulty, make certain tiles untouchable so they're locked in place and already correct
 
-Allow the user to manually drag the tiles instead of just clicking to move them
-
-Add sound effects for moving pieces, background music, victory message, etc
+Add background music
 
 Allow moving the empty slot with keyboard
 
 Add a drop shadow / frame effect to the tiles
-
-Add an animation / let the user drag in the final piece when the rest of the puzzle is correct
-
-fade numbers away after completion
-
 
 
 Add UI for:
@@ -23,3 +16,10 @@ Add UI for:
 	Music jukebox: next song, volume, etc
 	Title graphic
 	
+make board constant size for all board sizes
+
+make audio players an independent object so they are not destroyed upon board destruction
+
+make the final piece wiggle to get the user's attention
+
+make sure that puzzle graphics and victory jingles can't repeat when supposed to be random
