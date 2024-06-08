@@ -53,6 +53,11 @@ public class PuzzleBoardManager : MonoBehaviour
 		CreatePuzzleWithGraphic(currentGraphic);
 	}
 
+	public void TogglePuzzleBoard()
+	{
+		puzzleBoard.gameObject.SetActive(!puzzleBoard.gameObject.activeSelf);
+	}
+
 	private void LoadTextures()
 	{
 		puzzleGraphics = Resources.LoadAll<Texture2D>(puzzleArtFolder).ToList();
