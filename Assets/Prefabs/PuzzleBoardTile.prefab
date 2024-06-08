@@ -239,6 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileNumberText: {fileID: 8619780046618958906}
+  canvasGroup: {fileID: 4088188046538687600}
 --- !u!61 &1897505424673050984
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -373,6 +374,7 @@ GameObject:
   - component: {fileID: 3393134612141483474}
   - component: {fileID: 4321564562948334425}
   - component: {fileID: 5860114306450954532}
+  - component: {fileID: 4088188046538687600}
   m_Layer: 11
   m_Name: Canvas
   m_TagString: Untagged
@@ -463,3 +465,15 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &4088188046538687600
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3114934140721399286}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

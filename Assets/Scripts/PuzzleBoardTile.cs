@@ -1,11 +1,30 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class PuzzleBoardTile : MonoBehaviour
 {
 	[SerializeField] private TextMeshProUGUI tileNumberText;
+	[SerializeField] private CanvasGroup canvasGroup;
 
 	private SpriteRenderer spriteRenderer;
+
+	public IEnumerator FadeAlphaToValue(float time, float value)
+	{
+		float elapsedTime = 0f;
+		float startAlpha = canvasGroup.alpha;
+		float targetAlpha = value;
+
+		while (elapsedTime < time)
+		{
+			elapsedTime += Time.deltaTime;
+			float alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / time);
+			canvasGroup.alpha = alpha;
+			yield return null;
+		}
+
+		canvasGroup.alpha = targetAlpha;
+	}
 
 	public void Initialize(Texture2D sourceTexture, Vector2Int puzzleBoardCoordinates, Vector2Int tileSize, int boardSize)
 	{

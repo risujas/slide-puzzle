@@ -16,7 +16,9 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private LayerMask slotLayerMask;
 
 	private const float tileMovementSpeed = 0.2f;
+	private const float numberFadeTime = 1.0f;
 
+	private PuzzleBoardTile[] puzzleBoardTiles;
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
 	private PuzzleBoardBackground background;
@@ -46,15 +48,15 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		boardSize = size;
 
-		var tiles = CreateTilesFromTexture(texture);
-		CreateSlotsForTiles(tiles);
+		puzzleBoardTiles = CreateTilesFromTexture(texture);
+		CreateSlotsForTiles(puzzleBoardTiles);
 
 		CenterBoardOnWorldOrigin();
 
 		background = Instantiate(puzzleBoardBackgroundPrefab, transform);
 		background.SetBackgroundTransform(this);
 
-		InsertTilesToSlots(tiles);
+		InsertTilesToSlots(puzzleBoardTiles);
 		SetEmptyCornerTile();
 		StartCoroutine(ShuffleBoard(numMoves, 0.00f));
 	}
@@ -335,6 +337,14 @@ public class PuzzleBoard : MonoBehaviour
 		puzzleWasCompletedThisFrame = !wasAlreadyCompleted && puzzleIsCompleted;
 	}
 
+	private void FadeTileNumbers()
+	{
+		foreach (var t in puzzleBoardTiles)
+		{
+			StartCoroutine(t.FadeAlphaToValue(numberFadeTime, 0.0f));
+		}
+	}
+
 	private void LerpFinalTile()
 	{
 		var finalTile = finalTileSlot.CorrectTile;
@@ -392,7 +402,9 @@ public class PuzzleBoard : MonoBehaviour
 			{
 				bellSoundPlayer.Play();
 				enableInteraction = false;
+
 				StartCoroutine(LerpToPosition.Lerp(finalTile.gameObject, finalTileSlot.transform.position, 0.001f, 10.0f));
+				FadeTileNumbers();
 			}
 		}
 	}
