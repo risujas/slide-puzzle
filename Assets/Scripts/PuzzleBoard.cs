@@ -8,15 +8,15 @@ public class PuzzleBoard : MonoBehaviour
 	[SerializeField] private PuzzleBoardTile puzzleTilePrefab;
 	[SerializeField] private PuzzleBoardBackground puzzleBoardBackgroundPrefab;
 
-	[SerializeField] private RandomSoundPlayer tileMotionSoundPlayer;
-	[SerializeField] private RandomSoundPlayer popSoundPlayer;
-	[SerializeField] private RandomSoundPlayer bellSoundPlayer;
-
 	[SerializeField] private LayerMask tileLayerMask;
 	[SerializeField] private LayerMask slotLayerMask;
 
-	private const float tileMovementSpeed = 0.2f;
+	private AudioPlayer audioPlayer;
 
+	private const float tileMovementSpeed = 0.2f;
+	private const float numberFadeTime = 1.0f;
+
+	private PuzzleBoardTile[] puzzleBoardTiles;
 	private PuzzleBoardSlot[] puzzleBoardSlots;
 	private PuzzleBoardSlot finalTileSlot;
 	private PuzzleBoardBackground background;
@@ -46,15 +46,15 @@ public class PuzzleBoard : MonoBehaviour
 	{
 		boardSize = size;
 
-		var tiles = CreateTilesFromTexture(texture);
-		CreateSlotsForTiles(tiles);
+		puzzleBoardTiles = CreateTilesFromTexture(texture);
+		CreateSlotsForTiles(puzzleBoardTiles);
 
 		CenterBoardOnWorldOrigin();
 
 		background = Instantiate(puzzleBoardBackgroundPrefab, transform);
 		background.SetBackgroundTransform(this);
 
-		InsertTilesToSlots(tiles);
+		InsertTilesToSlots(puzzleBoardTiles);
 		SetEmptyCornerTile();
 		StartCoroutine(ShuffleBoard(numMoves, 0.00f));
 	}
@@ -79,7 +79,7 @@ public class PuzzleBoard : MonoBehaviour
 
 				if (playSound)
 				{
-					tileMotionSoundPlayer.Play();
+					audioPlayer.TileSoundPlayer.Play();
 				}
 
 				float t = 0.0f;
@@ -187,6 +187,8 @@ public class PuzzleBoard : MonoBehaviour
 
 	private PuzzleBoardTile[] CreateTilesFromTexture(Texture2D source)
 	{
+		currentGraphic = source;
+
 		tileSize.x = source.width / boardSize;
 		tileSize.y = source.height / boardSize;
 
@@ -312,7 +314,7 @@ public class PuzzleBoard : MonoBehaviour
 				if (tile == finalTileSlot.CorrectTile)
 				{
 					finalTileAnimationStage = 1;
-					tileMotionSoundPlayer.Play();
+					audioPlayer.TileSoundPlayer.Play();
 				}
 			}
 		}
@@ -333,6 +335,14 @@ public class PuzzleBoard : MonoBehaviour
 
 		puzzleIsCompleted = true;
 		puzzleWasCompletedThisFrame = !wasAlreadyCompleted && puzzleIsCompleted;
+	}
+
+	private void FadeTileNumbers()
+	{
+		foreach (var t in puzzleBoardTiles)
+		{
+			StartCoroutine(t.FadeAlphaToValue(numberFadeTime, 0.0f));
+		}
 	}
 
 	private void LerpFinalTile()
@@ -381,7 +391,7 @@ public class PuzzleBoard : MonoBehaviour
 				finalTileAnimationStage = 2;
 				finalTile.GetComponent<SpriteRenderer>().sortingLayerName = "PuzzleBoardTiles";
 				finalTileSlot.CorrectTile.GetComponentInChildren<Canvas>().sortingLayerName = "PuzzleBoardTiles";
-				tileMotionSoundPlayer.Play();
+				audioPlayer.TileSoundPlayer.Play();
 			}
 		}
 
@@ -390,11 +400,18 @@ public class PuzzleBoard : MonoBehaviour
 			float distance = Vector3.Distance(finalTile.transform.position, finalTileSlot.transform.position);
 			if (distance < finalTileDistanceThreshold)
 			{
-				bellSoundPlayer.Play();
+				audioPlayer.BellSoundPlayer.Play();
 				enableInteraction = false;
+
 				StartCoroutine(LerpToPosition.Lerp(finalTile.gameObject, finalTileSlot.transform.position, 0.001f, 10.0f));
+				FadeTileNumbers();
 			}
 		}
+	}
+
+	private void Start()
+	{
+		audioPlayer = FindFirstObjectByType<AudioPlayer>();
 	}
 
 	private void Update()
@@ -412,7 +429,7 @@ public class PuzzleBoard : MonoBehaviour
 
 					if (puzzleWasCompletedThisFrame)
 					{
-						popSoundPlayer.Play();
+						audioPlayer.PopSoundPlayer.Play();
 					}
 				}
 			}

@@ -15,6 +15,11 @@ public class PuzzleBoardManager : MonoBehaviour
 
 	public IList<Texture2D> PuzzleGraphics => puzzleGraphics.AsReadOnlyList();
 
+	public void SetBoardSize(int size)
+	{
+		boardSize = size;
+	}
+
 	public void CreatePuzzleWithRandomGraphic()
 	{
 		Texture2D randomGraphic = GetRandomTexture();
@@ -35,7 +40,19 @@ public class PuzzleBoardManager : MonoBehaviour
 
 		environmentBackground.SetBackground(graphic);
 
-		SetCameraSize(1.0f);
+		SetCameraSize(0.5f);
+	}
+
+	public void RecreatePuzzleWithCurrentGraphic()
+	{
+		// TODO check if redundant
+		Texture2D currentGraphic = puzzleBoard.currentGraphic;
+		CreatePuzzleWithGraphic(currentGraphic);
+	}
+
+	public void TogglePuzzleBoard()
+	{
+		puzzleBoard.gameObject.SetActive(!puzzleBoard.gameObject.activeSelf);
 	}
 
 	private void LoadTextures()
