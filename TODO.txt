@@ -36,3 +36,5 @@ add mobile touch controls and make sure the UI scales properly with any screen s
 allow changing the board background (wooden floor)
 
 allow adjusting the opacity of the number plates on the tiles
+
+trim audio file starts
