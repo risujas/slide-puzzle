@@ -40,7 +40,7 @@ public class PuzzleBoardManager : MonoBehaviour
 
 		environmentBackground.SetBackground(graphic);
 
-		SetCameraSize(1.0f);
+		SetCameraSize(0.5f);
 	}
 
 	public void RecreatePuzzleWithCurrentGraphic()
