@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopulateContent : MonoBehaviour
+public class PopulateGraphicSelectorContent : MonoBehaviour
 {
 	[SerializeField] private GameObject contentPrefab;
 	[SerializeField] private PuzzleBoardManager puzzleBoardManager;
