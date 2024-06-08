@@ -145,7 +145,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      mountain_valley_0: -8080221668786894542
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
