@@ -189,6 +189,8 @@ public class PuzzleBoard : MonoBehaviour
 
 	private PuzzleBoardTile[] CreateTilesFromTexture(Texture2D source)
 	{
+		currentGraphic = source;
+
 		tileSize.x = source.width / boardSize;
 		tileSize.y = source.height / boardSize;
 
