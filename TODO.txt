@@ -46,3 +46,5 @@ add a button to toggle between random/ordered playthrough of the puzzles
 implement exit button
 
 add a previous button to go back to the previous graphic
+
+castle
