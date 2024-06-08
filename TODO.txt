@@ -38,3 +38,7 @@ allow changing the board background (wooden floor)
 allow adjusting the opacity of the number plates on the tiles
 
 trim audio file starts
+
+bug: if switching to settings while tile numbers are fading, they will not finish fading. fix: set them to 0.0f alpha when you switch to settings
+
+add a button to toggle between random/ordered playthrough of the puzzles
