@@ -18,6 +18,8 @@ public static class LerpToPosition
 			distance = Vector3.Distance(obj.transform.position, pos);
 			yield return null;
 		}
+
+		obj.transform.position = pos;
 		yield return null;
 	}
 }
