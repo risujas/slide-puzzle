@@ -1,25 +1,18 @@
 Before shuffling, depending on the difficulty, make certain tiles untouchable so they're locked in place and already correct
 
-Add background music
-
 Add a drop shadow / frame effect to the tiles
 
 
 Add UI for:
 	Resetting the puzzle to the original config ( need seed)
-	Toggling music / sound effects
 	Auto-solve: Find the correct solution
 	Hint: find the next optimal move
 	Music jukebox: next song, volume, etc
-	Title graphic
 	message "Puzzle completed! Time: 203s - Moves: 39"
 
 make the random graphic selector prefer graphics that haven't been used yet (need to keep a list of used ones)
-
 	
 make board constant size for all board sizes
-
-make audio players an independent object so they are not destroyed upon board destruction
 
 make the final piece wiggle to get the user's attention
 
@@ -39,12 +32,8 @@ allow adjusting the opacity of the number plates on the tiles
 
 trim audio file starts
 
-bug: if switching to settings while tile numbers are fading, they will not finish fading. fix: set them to 0.0f alpha when you switch to settings
-
 add a button to toggle between random/ordered playthrough of the puzzles
-
-implement exit button
 
 add a previous button to go back to the previous graphic
 
-castle
+add persistent memory for settings (audio volumes)

@@ -27,8 +27,8 @@ public class PuzzleBoard : MonoBehaviour
 	private bool puzzleIsCompleted;
 	private bool puzzleWasCompletedThisFrame;
 
-	private int finalTileAnimationStage = 0;
 	private float finalTileDistanceThreshold = 0.035f;
+	public int finalTileAnimationStage { get; private set; } = 0;
 
 	public int boardSize { get; private set; }
 
@@ -57,6 +57,14 @@ public class PuzzleBoard : MonoBehaviour
 		InsertTilesToSlots(puzzleBoardTiles);
 		SetEmptyCornerTile();
 		StartCoroutine(ShuffleBoard(numMoves, 0.00f));
+	}
+
+	public void ForceFadeNumbers()
+	{
+		foreach (var t in puzzleBoardTiles)
+		{
+			t.ForceSetAlphaToValue(0.0f);
+		}
 	}
 
 	private void CenterBoardOnWorldOrigin()

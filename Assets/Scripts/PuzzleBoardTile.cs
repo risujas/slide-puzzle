@@ -26,6 +26,11 @@ public class PuzzleBoardTile : MonoBehaviour
 		canvasGroup.alpha = targetAlpha;
 	}
 
+	public void ForceSetAlphaToValue(float value)
+	{
+		canvasGroup.alpha = value;
+	}
+
 	public void Initialize(Texture2D sourceTexture, Vector2Int puzzleBoardCoordinates, Vector2Int tileSize, int boardSize)
 	{
 		Vector2 cornerPixel = new Vector2Int(puzzleBoardCoordinates.x * tileSize.x, puzzleBoardCoordinates.y * tileSize.y);
