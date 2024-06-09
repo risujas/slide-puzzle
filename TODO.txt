@@ -35,3 +35,5 @@ trim audio file starts
 add a button to toggle between random/ordered playthrough of the puzzles
 
 add a previous button to go back to the previous graphic
+
+add persistent memory for settings (audio volumes)
