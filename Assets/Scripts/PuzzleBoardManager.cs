@@ -45,14 +45,20 @@ public class PuzzleBoardManager : MonoBehaviour
 
 	public void RecreatePuzzleWithCurrentGraphic()
 	{
-		// TODO check if redundant
 		Texture2D currentGraphic = puzzleBoard.currentGraphic;
 		CreatePuzzleWithGraphic(currentGraphic);
 	}
 
 	public void TogglePuzzleBoard()
 	{
-		puzzleBoard.gameObject.SetActive(!puzzleBoard.gameObject.activeSelf);
+		bool enabled = !puzzleBoard.gameObject.activeSelf;
+
+		if (!enabled && puzzleBoard.finalTileAnimationStage > 0)
+		{
+			puzzleBoard.ForceFadeNumbers();
+		}
+
+		puzzleBoard.gameObject.SetActive(enabled);
 	}
 
 	private void LoadTextures()
