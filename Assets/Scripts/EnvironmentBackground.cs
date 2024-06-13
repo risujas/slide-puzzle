@@ -1,41 +1,41 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnvironmentBackground : MonoBehaviour
 {
-	[SerializeField] private GameObject background1;
-	[SerializeField] private GameObject background2;
+	[SerializeField] private GameObject backgroundPrefab;
 
-	private Texture2D previousGraphic;
-	private bool useFirstBackground = true;
-	private List<Coroutine> activeCoroutines = new List<Coroutine>();
+	private GameObject currentBackground;
+	private GameObject previousBackground;
+	private Coroutine currentFadeIn;
 
 	public void SetBackground(Texture2D nextGraphic)
 	{
+		previousBackground = currentBackground;
+
 		Sprite newSprite = Sprite.Create(nextGraphic, new Rect(0.0f, 0.0f, nextGraphic.width, nextGraphic.height), new Vector2(0.5f, 0.5f), 100.0f);
+		currentBackground = Instantiate(backgroundPrefab, transform);
+		SpriteRenderer renderer = currentBackground.GetComponent<SpriteRenderer>();
+		renderer.sprite = newSprite;
 
-		foreach (var c in activeCoroutines)
+		if (currentFadeIn != null)
 		{
-			StopCoroutine(c);
-		}
-		activeCoroutines.Clear();
-
-		if (useFirstBackground)
-		{
-			background1.GetComponent<SpriteRenderer>().sprite = newSprite;
-			activeCoroutines.Add(StartCoroutine(LerpAlpha(1f, 1f, background1.GetComponent<SpriteRenderer>())));
-			activeCoroutines.Add(StartCoroutine(LerpAlpha(0f, 1f, background2.GetComponent<SpriteRenderer>())));
-		}
-		else
-		{
-			background2.GetComponent<SpriteRenderer>().sprite = newSprite;
-			activeCoroutines.Add(StartCoroutine(LerpAlpha(0f, 1f, background1.GetComponent<SpriteRenderer>())));
-			activeCoroutines.Add(StartCoroutine(LerpAlpha(1f, 1f, background2.GetComponent<SpriteRenderer>())));
+			StopCoroutine(currentFadeIn);
 		}
 
-		useFirstBackground = !useFirstBackground;
-		previousGraphic = nextGraphic;
+		currentFadeIn = StartCoroutine(LerpAlpha(1f, 1f, renderer));
+
+		if (previousBackground != null)
+		{
+			StartCoroutine(LerpAlpha(0f, 1f, previousBackground.GetComponent<SpriteRenderer>()));
+			StartCoroutine(DestroyAfterTime(2f, previousBackground));
+		}
+	}
+
+	private IEnumerator DestroyAfterTime(float time, GameObject obj)
+	{
+		yield return new WaitForSeconds(time);
+		Destroy(obj);
 	}
 
 	private IEnumerator LerpAlpha(float target, float time, SpriteRenderer renderer)
