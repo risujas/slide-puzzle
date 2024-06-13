@@ -40,7 +40,14 @@ public class PuzzleBoardTile : MonoBehaviour
 		gameObject.name = "PuzzleTile_" + puzzleBoardCoordinates.x + "_" + puzzleBoardCoordinates.y; ;
 		spriteRenderer.sprite = sprite;
 
-		tileNumberText.text = ((puzzleBoardCoordinates.x + puzzleBoardCoordinates.y * boardSize) + 1).ToString();
+		if (PlayerPrefs.GetInt("InvertNumbers", 0) == 1)
+		{
+			tileNumberText.text = ((puzzleBoardCoordinates.x + puzzleBoardCoordinates.y * boardSize) + 1).ToString();
+		}
+		else
+		{
+			tileNumberText.text = ((puzzleBoardCoordinates.x + (boardSize - 1 - puzzleBoardCoordinates.y) * boardSize) + 1).ToString();
+		}
 	}
 
 	private void Awake()
